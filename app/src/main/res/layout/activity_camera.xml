@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/darker"
+    android:orientation="vertical"
+    tools:context=".Camera">
+
+    <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="200sp"
+            tools:srcCompat="@tools:sample/avatars"
+            android:layout_marginTop="30sp"
+            android:layout_marginStart="75sp"
+            android:layout_marginEnd="75sp"
+            />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/filledroundbox"
+        android:backgroundTint="@color/blue"
+        android:text="Capture"
+        android:layout_marginTop="30sp"
+        android:layout_marginStart="75sp"
+        android:layout_marginEnd="75sp"
+        android:fontFamily="@font/roboto_regular"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        />
+</android.widget.LinearLayout>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/darker"
+    android:orientation="vertical"
+    tools:context=".LoginPage">
+
+    <TextView
+        android:id="@+id/h1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Auth"
+        android:fontFamily="@font/roboto_bold"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        android:layout_marginTop="50sp"
+        android:layout_marginStart="50sp"
+        />
+
+    <TextView
+        android:id="@+id/l1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/h1"
+        android:text="Email"
+        android:textColor="@color/light"
+        android:textSize="24sp"
+        android:layout_marginTop="20sp"
+        android:layout_marginStart="60sp"
+        android:fontFamily="@font/roboto_regular"
+        />
+
+    <EditText
+        android:id="@+id/emailET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/roundbox"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:minHeight="48dp"
+        android:textColor="@color/white"
+        android:hint="abdulkader@gmail.com"
+        android:textColorHint="@color/light"
+        android:layout_marginTop="20sp"
+        android:layout_marginStart="50sp"
+        android:layout_marginEnd="50sp"
+        android:fontFamily="@font/roboto_regular"
+        />
+
+
+    <TextView
+        android:id="@+id/l2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Password"
+        android:textColor="@color/light"
+        android:textSize="24sp"
+        android:layout_marginTop="20sp"
+        android:layout_marginStart="60sp"
+        />
+
+
+    <EditText
+        android:id="@+id/passET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/roundbox"
+        android:ems="10"
+        android:hint="Write your password"
+        android:minHeight="48dp"
+        android:inputType="textPassword"
+        android:textColor="@color/white"
+        android:textColorHint="@color/light"
+        android:layout_marginTop="20sp"
+        android:layout_marginStart="50sp"
+        android:layout_marginEnd="50sp"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/filledroundbox"
+        android:backgroundTint="@color/blue"
+        android:text="Login"
+        android:layout_marginTop="30sp"
+        android:layout_marginStart="75sp"
+        android:layout_marginEnd="75sp"
+        android:fontFamily="@font/roboto_regular"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/filledroundbox"
+        android:backgroundTint="@color/blue"
+        android:text="Register"
+        android:layout_marginTop="30sp"
+        android:layout_marginStart="75sp"
+        android:layout_marginEnd="75sp"
+        android:fontFamily="@font/roboto_regular"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        />
+
+</android.widget.LinearLayout>

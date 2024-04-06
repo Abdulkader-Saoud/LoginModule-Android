@@ -2,32 +2,33 @@ package com.example.loginmodule;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginPage extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private  EditText emailET, passwordET;
-
+    private ProgressBar progressBar;
+    SharedPreferences sharedPref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,70 +41,112 @@ public class LoginPage extends AppCompatActivity {
         });
         mAuth = FirebaseAuth.getInstance();
         Button loginButton = findViewById(R.id.button);
-        loginButton.setOnClickListener(this::onClickLogin);
         Button registerButton = findViewById(R.id.button2);
+        progressBar = findViewById(R.id.progressBar);
+
+        loginButton.setOnClickListener(this::onClickLogin);
         registerButton.setOnClickListener(this::onClickRegister);
+
+        sharedPref = getSharedPreferences("login", Context.MODE_PRIVATE);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            Toast toast = Toast.makeText(this, "User in session", Toast.LENGTH_SHORT);
-            toast.show();
-//            Intent intent = new Intent(this, CourseList.class);
-//            startActivity(intent);
-        }
+        checkIfRegistered();
     }
 
+    //Check if user is registered in db with this id
+    private void checkIfRegistered(){
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            return;
+        }
+        if (sharedPref.getString(getString(R.string.prefKey_stdID), null) != null) {
+            Intent intent = new Intent(LoginPage.this, HomePage.class);
+            startActivity(intent);
+            return;
+        }
+        String Uid = user.getUid();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Users").document(Uid)
+                .get()
+                .addOnSuccessListener(aVoid -> {
+                    if (aVoid.getData() != null) {
+                        SharedPreferences.Editor editor = sharedPref.edit();
+
+                        editor.putString(getString(R.string.prefKey_fName), aVoid.getString("fname"));
+                        editor.putString(getString(R.string.prefKey_stdID), aVoid.getString("stdID"));
+                        editor.putString(getString(R.string.prefKey_accType), aVoid.getString("accType"));
+                        editor.apply();
+
+                        Intent intent = new Intent(LoginPage.this, HomePage.class);
+                        startActivity(intent);
+                    }
+                    else {
+                        Intent intent = new Intent(LoginPage.this, RegisterPage.class);
+                        startActivity(intent);
+                    }
+                })
+                .addOnFailureListener( e -> {
+                    Toast toast = Toast.makeText(LoginPage.this, "Something went wrong.",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                });
+    }
     public void onClickLogin(View view) {
         String emailstr, passwordstr;
-        emailET = (EditText) findViewById(R.id.emailET);
-        passwordET = (EditText) findViewById(R.id.passET);
+        emailET =  findViewById(R.id.emailET);
+        passwordET = findViewById(R.id.passET);
         emailstr = emailET.getText().toString();
         passwordstr = passwordET.getText().toString();
+
 
         if(emailstr.isEmpty() || passwordstr.isEmpty()){
             Toast toast = Toast.makeText(this, "Please fill all the fields", Toast.LENGTH_SHORT);
             toast.show();
             return;
         }
+        progressBar.setVisibility(View.VISIBLE);
+
         mAuth.signInWithEmailAndPassword(emailstr, passwordstr)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            if (user == null) {
-                                Toast toast = Toast.makeText(LoginPage.this, "User not found.",
-                                        Toast.LENGTH_SHORT);
-                                toast.show();
-                                return;
-                            }
-                            if (!user.isEmailVerified()) {
-                                Toast toast = Toast.makeText(LoginPage.this, "Verify your email.",
-                                        Toast.LENGTH_SHORT);
-                                toast.show();
-                                return;
-                            }
-                            Intent intent = new Intent(LoginPage.this, RegisterPage.class);
-                            startActivity(intent);
-                        } else {
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginPage.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                .addOnCompleteListener(this, task -> {
+                    progressBar.setVisibility(View.GONE);
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "signInWithEmail:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if (user == null) {
+                            Toast toast = Toast.makeText(LoginPage.this, "User not found.",
+                                    Toast.LENGTH_SHORT);
+                            toast.show();
+                            return;
                         }
+                        if (!user.isEmailVerified()) {
+                            Toast toast = Toast.makeText(LoginPage.this, "Verify your email.",
+                                    Toast.LENGTH_SHORT);
+                            toast.show();
+                            return;
+                        }
+
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putString(getString(R.string.prefKey_email), emailstr);
+                        editor.apply();
+
+                        checkIfRegistered();
+                    } else {
+                        Log.w(TAG, "signInWithEmail:failure", task.getException());
+                        Toast.makeText(LoginPage.this, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
     }
     public void onClickRegister(View view) {
         String emailstr, passwordstr;
-        emailET = (EditText) findViewById(R.id.emailET);
-        passwordET = (EditText) findViewById(R.id.passET);
+        emailET =  findViewById(R.id.emailET);
+        passwordET = findViewById(R.id.passET);
         emailstr = emailET.getText().toString();
         passwordstr = passwordET.getText().toString();
+
 
         if(emailstr.isEmpty() || passwordstr.isEmpty()){
             Toast toast = Toast.makeText(this, "Please fill all the fields", Toast.LENGTH_SHORT);
@@ -120,10 +163,12 @@ public class LoginPage extends AppCompatActivity {
             toast.show();
             return;
         }
+        progressBar.setVisibility(View.VISIBLE);
+
         mAuth.createUserWithEmailAndPassword(emailstr, passwordstr)
                 .addOnCompleteListener(this, task -> {
+                    progressBar.setVisibility(View.GONE);
                     if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "createUserWithEmail:success");
                         FirebaseUser user = mAuth.getCurrentUser();
                         if (user == null) {
@@ -160,5 +205,4 @@ public class LoginPage extends AppCompatActivity {
                     }
                 });
     }
-
 }

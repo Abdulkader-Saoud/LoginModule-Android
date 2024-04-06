@@ -12,7 +12,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Course List"
+        android:text="Course App"
         android:textAlignment="center"
         android:fontFamily="@font/roboto_bold"
         android:textColor="@color/white"
@@ -20,16 +20,33 @@
         android:layout_marginTop="50sp"
         />
 
-    <ListView
-        android:id="@+id/courseList"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonProfile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="20sp"
-        android:layout_marginStart="20sp"
-        android:layout_marginEnd="20sp"
-        android:divider="@color/white"
-        android:dividerHeight="1sp"
+        android:background="@drawable/filledroundbox"
+        android:backgroundTint="@color/blue"
+        android:text="Profile"
+        android:layout_marginTop="30sp"
+        android:layout_marginStart="75sp"
+        android:layout_marginEnd="75sp"
+        android:fontFamily="@font/roboto_regular"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonLogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/filledroundbox"
+        android:backgroundTint="@color/blue"
+        android:text="logout"
+        android:layout_marginTop="30sp"
+        android:layout_marginStart="75sp"
+        android:layout_marginEnd="75sp"
+        android:fontFamily="@font/roboto_regular"
+        android:textColor="@color/white"
+        android:textSize="24sp"
         />
 
 </android.widget.LinearLayout>

@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,11 +22,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.io.Console;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
+
+import firebase.com.protolitewrapper.BuildConfig;
 
 public class Camera extends AppCompatActivity {
 
@@ -40,17 +43,11 @@ public class Camera extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
-//        selectedImage = findViewById(R.id.imageView);
+        selectedImage = findViewById(R.id.imageView);
         cameraBtn = findViewById(R.id.button
         );
 
-        // Open Camera
-        cameraBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                verifyPermissions();
-            }
-        });
+        cameraBtn.setOnClickListener(v -> verifyPermissions());
     }
 
     private void verifyPermissions(){
@@ -93,53 +90,39 @@ public class Camera extends AppCompatActivity {
                 File f = new File(currentPhotoPath);
                 selectedImage.setImageURI(Uri.fromFile(f));
                 Log.d("tag", "ABsolute Url of Image is " + Uri.fromFile(f));
-
-                // Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                // Uri contentUri = Uri.fromFile(f);
-                // mediaScanIntent.setData(contentUri);
-                // this.sendBroadcast(mediaScanIntent);
             }
 
         }
     }
 
     private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-//      File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        String imageFileName = "ProgilePic";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        Log.d("tag", "Storage dir is: " + storageDir);
         File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
+                imageFileName,
+                ".jpg",
+                storageDir
         );
-
-        // Save a file: path for use with ACTION_VIEW intents
+        Log.d("tag", "Image Path is: " + image.getAbsolutePath());
         currentPhotoPath = image.getAbsolutePath();
+        Log.d("tag", "Current Photo Path is: " + currentPhotoPath);
         return image;
     }
 
-
-
-
-
-
     private void dispatchTakePictureIntent() {
-
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
             File photoFile = null;
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
-
+                Log.e("tag", "Error Creating File: " + ex.getMessage());
             }
-            // Continue only if the File was successfully created
             if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this, "com.example.android.fileprovider", photoFile);
+                Uri photoURI = FileProvider.getUriForFile(Objects.requireNonNull(getApplicationContext()),
+                        "com.example.loginmodule.provider", photoFile);
+
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
 
                 startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);

@@ -42,10 +42,8 @@
         android:visibility="invisible">
         <ImageView
             android:id="@+id/imgView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="130sp"
-            android:minWidth="130sp"
+            android:layout_width="150sp"
+            android:layout_height="150sp"
             android:background="@drawable/roundbox"
             tools:srcCompat="@tools:sample/avatars"
             app:layout_constraintEnd_toEndOf="parent"

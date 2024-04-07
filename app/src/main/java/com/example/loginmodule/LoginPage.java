@@ -47,7 +47,7 @@ public class LoginPage extends AppCompatActivity {
         loginButton.setOnClickListener(this::onClickLogin);
         registerButton.setOnClickListener(this::onClickRegister);
 
-        sharedPref = getSharedPreferences("login", Context.MODE_PRIVATE);
+        sharedPref = getSharedPreferences(getString(R.string.prefName_login), Context.MODE_PRIVATE);
     }
 
     @Override

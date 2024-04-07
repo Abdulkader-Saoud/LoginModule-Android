@@ -11,12 +11,12 @@
 
     <ImageView
             android:id="@+id/imageView"
-            android:layout_width="match_parent"
+            android:layout_width="200sp"
             android:layout_height="200sp"
+            android:layout_gravity="center"
+            android:background="@drawable/roundbox"
             tools:srcCompat="@tools:sample/avatars"
             android:layout_marginTop="30sp"
-            android:layout_marginStart="75sp"
-            android:layout_marginEnd="75sp"
             />
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button"
@@ -28,6 +28,36 @@
         android:layout_marginTop="30sp"
         android:layout_marginStart="75sp"
         android:layout_marginEnd="75sp"
+        android:fontFamily="@font/roboto_regular"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonGallery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/filledroundbox"
+        android:backgroundTint="@color/blue"
+        android:text="Gallery"
+        android:layout_marginTop="30sp"
+        android:layout_marginStart="75sp"
+        android:layout_marginEnd="75sp"
+        android:fontFamily="@font/roboto_regular"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/filledroundbox"
+        android:backgroundTint="@color/blue"
+        android:text="Save"
+        android:layout_marginTop="30sp"
+        android:layout_marginStart="90sp"
+        android:layout_marginEnd="90sp"
         android:fontFamily="@font/roboto_regular"
         android:textColor="@color/white"
         android:textSize="24sp"

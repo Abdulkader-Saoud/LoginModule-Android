@@ -6,10 +6,16 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
+    <string name="prefName_login">login</string>
+
+
     <string name="prefKey_email">email</string>
     <string name="prefKey_fName">fname</string>
     <string name="prefKey_stdID">stdID</string>
     <string name="prefKey_accType">accType</string>
+    <string name="prefKey_imagePath">imagePath</string>
+
+
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris

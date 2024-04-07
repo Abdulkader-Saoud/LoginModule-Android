@@ -1,5 +1,8 @@
 package com.example.loginmodule;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,9 +11,9 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,11 +27,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Objects;
-
-import firebase.com.protolitewrapper.BuildConfig;
 
 public class Camera extends AppCompatActivity {
 
@@ -46,11 +45,24 @@ public class Camera extends AppCompatActivity {
         selectedImage = findViewById(R.id.imageView);
         cameraBtn = findViewById(R.id.button
         );
+        Button galleryBtn = findViewById(R.id.buttonGallery);
+        Button saveBtn = findViewById(R.id.buttonSave);
 
-        cameraBtn.setOnClickListener(v -> verifyPermissions());
+        cameraBtn.setOnClickListener(v -> verifyPermissions(0));
+        galleryBtn.setOnClickListener(v -> verifyPermissions(1));
+        saveBtn.setOnClickListener(this::saveImagePathToPref);
     }
 
-    private void verifyPermissions(){
+    public void saveImagePathToPref(View view){
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.prefName_login), MODE_PRIVATE);
+        SharedPreferences.Editor myEdit = sharedPreferences.edit();
+        myEdit.putString(getString(R.string.prefKey_imagePath), currentPhotoPath);
+        myEdit.apply();
+        Toast.makeText(this, "Image Path Saved", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, ProfilePage.class);
+        startActivity(intent);
+    }
+    private void verifyPermissions(Integer i){
         String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.CAMERA};
@@ -61,8 +73,13 @@ public class Camera extends AppCompatActivity {
                 permissions[1]) == PackageManager.PERMISSION_GRANTED
                 && ContextCompat.checkSelfPermission(this.getApplicationContext(),
                 permissions[2]) == PackageManager.PERMISSION_GRANTED){
-
-            dispatchTakePictureIntent();
+            if (i == 0)
+                dispatchTakePictureIntent();
+            else {
+                pickMedia.launch(new PickVisualMediaRequest.Builder()
+                        .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                        .build());
+            }
         }else{
             ActivityCompat.requestPermissions(this,
                     permissions,
@@ -124,10 +141,20 @@ public class Camera extends AppCompatActivity {
                         "com.example.loginmodule.provider", photoFile);
 
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-
                 startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
             }
         }
     }
+    ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
+            registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+
+                if (uri != null) {
+                    Log.d("PhotoPicker", "Selected URI: " + uri);
+                    currentPhotoPath = uri.toString();
+                    selectedImage.setImageURI(uri);
+                } else {
+                    Log.d("PhotoPicker", "No media selected");
+                }
+            });
 
 }

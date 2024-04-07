@@ -1,6 +1,8 @@
 package com.example.loginmodule;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
@@ -31,6 +33,7 @@ public class ProfilePage extends AppCompatActivity {
     private Map<String, Object> profileData = new HashMap<>();
     private ProgressBar progressBar;
     private ConstraintLayout dataLayout;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +76,14 @@ public class ProfilePage extends AppCompatActivity {
         else {
             Log.e("ProfilePage", "assignFields: profileData is empty");
         }
+
+        sharedPreferences = getSharedPreferences(getString(R.string.prefName_login), MODE_PRIVATE);
+        String imagePath = sharedPreferences.getString(getString(R.string.prefKey_imagePath), null);
+        Log.d("ProfilePage", "assignFields: " + imagePath);
+        if (imagePath != null) {
+            profilePic.setImageURI(Uri.parse(imagePath));
+        }
+
 
         progressBar.setVisibility(ProgressBar.INVISIBLE);
         dataLayout.setVisibility(ConstraintLayout.VISIBLE);

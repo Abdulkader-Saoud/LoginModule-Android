@@ -56,6 +56,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/CL"
                 android:layout_marginTop="20sp"
+                android:contentDescription="Your profile picture"
                 />
 
             <TextView
@@ -96,7 +97,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/TVtype"
                 android:layout_marginStart="40sp"
-                android:layout_marginTop="48sp"/>
+                android:layout_marginTop="43sp"/>
             <EditText
                 android:id="@+id/etStdid"
                 android:layout_width="0dp"
@@ -115,7 +116,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginStart="30sp"
                 android:layout_marginEnd="30sp"
-                android:layout_marginTop="40sp"/>
+                android:layout_marginTop="35sp"/>
 
             <TextView
                 android:id="@+id/lName"
@@ -270,7 +271,7 @@
                 android:layout_marginTop="35sp"/>
 
             <CheckBox
-                android:id="@+id/checkbox"
+                android:id="@+id/checkboxContact"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/roboto_regular"
@@ -340,7 +341,7 @@
                 android:background="@drawable/roundbox"
                 android:ems="10"
                 android:fontFamily="@font/roboto_regular"
-                android:inputType="numberSigned"
+                android:inputType="phone"
                 android:hint="5550666679"
                 android:minHeight="48dp"
                 android:textColor="@color/white"
@@ -350,6 +351,135 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginStart="30sp"
                 android:layout_marginEnd="30sp"
+                android:layout_marginTop="30sp"
+                />
+
+            <TextView
+                android:id="@+id/lSocials"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:text="Socials"
+                android:textColor="@color/light"
+                android:textSize="22sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etPhone"
+                android:layout_marginStart="40sp"
+                android:layout_marginEnd="40sp"
+                android:layout_marginTop="35sp"/>
+
+            <CheckBox
+                android:id="@+id/checkboxSocials"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/roboto_regular"
+                android:text="private"
+                android:textColor="@color/grey"
+                android:textSize="20sp"
+                app:layout_constraintStart_toEndOf="@id/lContact"
+                app:layout_constraintTop_toBottomOf="@+id/etPhone"
+                android:layout_marginStart="40sp"
+                android:layout_marginTop="28sp"
+                />
+
+            <TextView
+                android:id="@+id/lInstagram"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:text="Instagram"
+                android:textColor="@color/light"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lSocials"
+                android:layout_marginStart="40sp"
+                android:layout_marginEnd="40sp"
+                android:layout_marginTop="38sp"/>
+
+            <EditText
+                android:id="@+id/etInstagram"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/roundbox"
+                android:ems="10"
+                android:fontFamily="@font/roboto_regular"
+                android:inputType="textEmailAddress"
+                android:hint="abdulkader_saoud"
+                android:minHeight="48dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/grey"
+                app:layout_constraintStart_toEndOf="@id/lSTDID"
+                app:layout_constraintTop_toBottomOf="@+id/lSocials"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="30sp"
+                android:layout_marginEnd="30sp"
+                android:layout_marginTop="30sp"
+                />
+
+            <TextView
+                android:id="@+id/lTwitter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:text="Twitter"
+                android:textColor="@color/light"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etInstagram"
+                android:layout_marginStart="40sp"
+                android:layout_marginEnd="40sp"
+                android:layout_marginTop="38sp"/>
+
+            <EditText
+                android:id="@+id/etTwitter"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/roundbox"
+                android:ems="10"
+                android:fontFamily="@font/roboto_regular"
+                android:inputType="numberSigned"
+                android:hint="abdulkader"
+                android:minHeight="48dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/grey"
+                app:layout_constraintStart_toEndOf="@id/lSTDID"
+                app:layout_constraintTop_toBottomOf="@+id/etInstagram"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="30sp"
+                android:layout_marginEnd="30sp"
+                android:layout_marginTop="30sp"
+                />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/saveButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/filledroundbox"
+                android:backgroundTint="@color/blue"
+                android:text="Save"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                app:layout_constraintTop_toBottomOf="@+id/etTwitter"
+                android:layout_marginStart="60sp"
+                android:layout_marginEnd="60sp"
+                android:layout_marginTop="40sp"
+                />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/forwardButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/filledroundbox"
+                android:backgroundTint="@color/blue"
+                android:text="Forward"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                app:layout_constraintTop_toBottomOf="@+id/saveButton"
+                android:layout_marginStart="60sp"
+                android:layout_marginEnd="60sp"
                 android:layout_marginTop="30sp"
                 />
 

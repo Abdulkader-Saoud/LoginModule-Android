@@ -5,9 +5,11 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -27,13 +29,14 @@ import java.util.Objects;
 
 public class ProfilePage extends AppCompatActivity {
     private FirebaseAuth mAuth;
-    private EditText fname, lname, stdid;
+    private EditText fname, lname, stdid, etSemester;
     private ImageView profilePic;
     private TextView type;
     private Map<String, Object> profileData = new HashMap<>();
     private ProgressBar progressBar;
     private ConstraintLayout dataLayout;
     private SharedPreferences sharedPreferences;
+    private Spinner spinneredu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +53,12 @@ public class ProfilePage extends AppCompatActivity {
         lname = findViewById(R.id.etSurname);
         stdid = findViewById(R.id.etStdid);
         type = findViewById(R.id.TVtype);
+        spinneredu = findViewById(R.id.spinnerEdu);
         progressBar = findViewById(R.id.progressBar);
         profilePic = findViewById(R.id.imgView);
         dataLayout = findViewById(R.id.CL);
+        etSemester = findViewById(R.id.etSemester);
+
         profilePic.setOnClickListener(v -> openCamera());
     }
 
@@ -72,6 +78,8 @@ public class ProfilePage extends AppCompatActivity {
             lname.setText(profileData.containsKey("lname") ? Objects.requireNonNull(profileData.get("lname")).toString() : "NON");
             stdid.setText(profileData.containsKey("stdID") ? Objects.requireNonNull(profileData.get("stdID")).toString() : "NON");
             type.setText(profileData.containsKey("accountType") ? Objects.requireNonNull(profileData.get("accountType")).toString() : "NON");
+            spinneredu.setSelection(profileData.containsKey("eduLevel") ? ((ArrayAdapter) spinneredu.getAdapter()).getPosition(Objects.requireNonNull(profileData.get("eduLevel")).toString()) : 0);
+            etSemester.setText(profileData.containsKey("semester") ? Objects.requireNonNull(profileData.get("semester")).toString() : "1");
         }
         else {
             Log.e("ProfilePage", "assignFields: profileData is empty");

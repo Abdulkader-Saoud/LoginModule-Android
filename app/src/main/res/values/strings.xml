@@ -6,6 +6,13 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
+    <string-array name="edu_degrees">
+        <item>None</item>
+        <item>Undergraduate</item>
+        <item>Master</item>
+        <item>PhD</item>
+    </string-array>
+
     <string name="prefName_login">login</string>
 
 

@@ -62,7 +62,10 @@ public class LoginPage extends AppCompatActivity {
         if (user == null) {
             return;
         }
-        if (sharedPref.getString(getString(R.string.prefKey_stdID), null) != null) {
+        if (!user.isEmailVerified()) {
+            return;
+        }
+        if (sharedPref.getString(getString(R.string.prefKey_stdID), null) != null && sharedPref.getString(getString(R.string.prefKey_email), null) != null){
             Intent intent = new Intent(LoginPage.this, HomePage.class);
             startActivity(intent);
             return;
@@ -158,11 +161,11 @@ public class LoginPage extends AppCompatActivity {
             toast.show();
             return;
         }
-        else if (!emailstr.contains("@") || !emailstr.contains("yildiz.edu")){
-            Toast toast = Toast.makeText(this, "Only yildiz mails are accepted", Toast.LENGTH_SHORT);
-            toast.show();
-            return;
-        }
+//        else if (!emailstr.contains("@") || !emailstr.contains("yildiz.edu")){
+//            Toast toast = Toast.makeText(this, "Only yildiz mails are accepted", Toast.LENGTH_SHORT);
+//            toast.show();
+//            return;
+//        }
         progressBar.setVisibility(View.VISIBLE);
 
         mAuth.createUserWithEmailAndPassword(emailstr, passwordstr)

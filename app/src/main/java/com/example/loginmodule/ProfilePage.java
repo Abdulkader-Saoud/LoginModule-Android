@@ -40,7 +40,7 @@ public class ProfilePage extends AppCompatActivity {
     private ConstraintLayout dataLayout;
     private SharedPreferences sharedPreferences;
     private Spinner spinneredu;
-    private Button saveBtn, forwardBtn;
+    private Button saveBtn, forwardBtn, passButton;
     private CheckBox checkboxSocials,checkboxContact;
 
     @Override
@@ -71,10 +71,12 @@ public class ProfilePage extends AppCompatActivity {
         checkboxContact = findViewById(R.id.checkboxContact);
         saveBtn = findViewById(R.id.saveButton);
         forwardBtn = findViewById(R.id.forwardButton);
+        passButton = findViewById(R.id.passButton);
 
         profilePic.setOnClickListener(v -> openCamera());
         saveBtn.setOnClickListener(v -> saveToFirebase());
         forwardBtn.setOnClickListener(v -> forward());
+        passButton.setOnClickListener(v -> passwrodChange());
     }
 
     @Override
@@ -113,7 +115,39 @@ public class ProfilePage extends AppCompatActivity {
         Intent chooser = Intent.createChooser(intent, "Send Message via:");
         startActivity(chooser);
     }
+    private void passwrodChange(){
+
+        mAuth.sendPasswordResetEmail(mAuth.getCurrentUser().getEmail()).addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                Toast toast = Toast.makeText(this, "Password reset email sent", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+            else {
+                Log.e("ProfilePage", "passwrodChange: " + task.getException());
+                Toast toast = Toast.makeText(this, "Password reset email could not be sent", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+            Intent intent = new Intent(this, HomePage.class);
+            startActivity(intent);
+        });
+
+    }
     private void saveToFirebase(){
+        if (fname.getText().toString().isEmpty()){
+            Toast toast = Toast.makeText(this, "Please fill the name", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
+        if (lname.getText().toString().isEmpty()){
+            Toast toast = Toast.makeText(this, "Please fill the surname", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
+        if (stdid.getText().toString().isEmpty()){
+            Toast toast = Toast.makeText(this, "Please fill the student ID", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -133,6 +167,12 @@ public class ProfilePage extends AppCompatActivity {
             db.collection("Users").document(user.getUid()).set(data).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     Log.d("ProfilePage", "saveToFirebase: Data saved successfully");
+                    SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.prefName_login), MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString(getString(R.string.prefKey_stdID), stdid.getText().toString());
+                    editor.putString(getString(R.string.prefKey_fName), fname.getText().toString());
+                    editor.putString(getString(R.string.prefKey_accType), type.getText().toString());
+                    editor.apply();
                     Toast toast = Toast.makeText(this, "Data saved successfully", Toast.LENGTH_SHORT);
                     toast.show();
                 }

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/darker"
     android:orientation="vertical"
-    tools:context=".LoginPage">
+    tools:context=".Profile.LoginPage">
 
     <TextView
         android:id="@+id/h1"

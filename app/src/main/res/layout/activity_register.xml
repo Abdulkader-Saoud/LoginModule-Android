@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/darker"
     android:orientation="vertical"
-    tools:context=".RegisterPage">
+    tools:context=".Profile.RegisterPage">
 
     <TextView
         android:id="@+id/h1"
@@ -95,7 +95,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/lSTDID"
+        android:id="@+id/cidTF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/h1"

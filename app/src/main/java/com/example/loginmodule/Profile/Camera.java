@@ -1,4 +1,4 @@
-package com.example.loginmodule;
+package com.example.loginmodule.Profile;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
@@ -24,6 +24,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.example.loginmodule.Profile.ProfilePage;
+import com.example.loginmodule.R;
 
 import java.io.File;
 import java.io.IOException;

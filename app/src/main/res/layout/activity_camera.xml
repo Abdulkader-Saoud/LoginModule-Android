@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/darker"
     android:orientation="vertical"
-    tools:context=".Camera">
+    tools:context=".Profile.Camera">
 
     <ImageView
             android:id="@+id/imageView"

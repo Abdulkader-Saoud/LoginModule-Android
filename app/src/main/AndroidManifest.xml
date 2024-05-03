@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <uses-feature android:name="android.hardware.camera" />
 
     <application
@@ -17,6 +18,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginModule"
         tools:targetApi="31">
+<!--        <activity-->
+<!--            android:name=".Course.CourseCreatePage"-->
+<!--            android:exported="false" />-->
+        <activity
+            android:name=".Course.CoursePage"
+            android:exported="false" />
+        <activity
+            android:name=".Course.CoursesPage"
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -29,11 +39,21 @@
         </provider>
 
         <activity
-            android:name=".ProfilePage"
+            android:name=".Profile.ProfilePage"
             android:exported="false"
             android:theme="@style/Theme.LoginModule" />
+<!--        <activity-->
+<!--            android:name=".Profile.LoginPage"-->
+<!--            android:exported="true"-->
+<!--            android:theme="@style/Theme.LoginModule">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
         <activity
-            android:name=".LoginPage"
+            android:name=".Course.CourseCreatePage"
             android:exported="true"
             android:theme="@style/Theme.LoginModule">
             <intent-filter>
@@ -43,11 +63,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RegisterPage"
+            android:name=".Profile.LoginPage"
             android:exported="false"
             android:theme="@style/Theme.LoginModule" />
         <activity
-            android:name=".Camera"
+            android:name=".Profile.RegisterPage"
+            android:exported="false"
+            android:theme="@style/Theme.LoginModule" />
+        <activity
+            android:name=".Profile.Camera"
             android:exported="false"
             android:theme="@style/Theme.LoginModule" />
         <activity

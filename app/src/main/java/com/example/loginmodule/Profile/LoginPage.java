@@ -1,4 +1,4 @@
-package com.example.loginmodule;
+package com.example.loginmodule.Profile;
 
 import static android.content.ContentValues.TAG;
 
@@ -19,6 +19,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.loginmodule.HomePage;
+import com.example.loginmodule.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;

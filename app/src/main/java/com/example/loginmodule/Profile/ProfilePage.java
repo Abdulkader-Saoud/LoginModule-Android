@@ -1,4 +1,4 @@
-package com.example.loginmodule;
+package com.example.loginmodule.Profile;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,6 +22,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.loginmodule.HomePage;
+import com.example.loginmodule.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -56,7 +58,7 @@ public class ProfilePage extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         fname = findViewById(R.id.etName);
         lname = findViewById(R.id.etSurname);
-        stdid = findViewById(R.id.etStdid);
+        stdid = findViewById(R.id.cidET);
         type = findViewById(R.id.TVtype);
         spinneredu = findViewById(R.id.spinnerEdu);
         progressBar = findViewById(R.id.progressBar);

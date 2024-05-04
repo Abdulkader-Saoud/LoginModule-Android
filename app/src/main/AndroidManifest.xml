@@ -18,9 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginModule"
         tools:targetApi="31">
-<!--        <activity-->
-<!--            android:name=".Course.CourseCreatePage"-->
-<!--            android:exported="false" />-->
+        <activity
+            android:name=".Course.CourseGroupPage"
+            android:exported="false" />
         <activity
             android:name=".Course.CoursePage"
             android:exported="false" />
@@ -39,33 +39,19 @@
         </provider>
 
         <activity
-            android:name=".Profile.ProfilePage"
-            android:exported="false"
-            android:theme="@style/Theme.LoginModule" />
-<!--        <activity-->
-<!--            android:name=".Profile.LoginPage"-->
-<!--            android:exported="true"-->
-<!--            android:theme="@style/Theme.LoginModule">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
+             android:name=".Profile.LoginPage"
+             android:exported="true"
+             android:theme="@style/Theme.LoginModule">
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
+             <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+             </activity>
         <activity
             android:name=".Course.CourseCreatePage"
             android:exported="true"
-            android:theme="@style/Theme.LoginModule">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".Profile.LoginPage"
-            android:exported="false"
             android:theme="@style/Theme.LoginModule" />
+
         <activity
             android:name=".Profile.RegisterPage"
             android:exported="false"

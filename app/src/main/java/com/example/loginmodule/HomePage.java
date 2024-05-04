@@ -12,12 +12,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.loginmodule.Course.CourseCreatePage;
 import com.example.loginmodule.Course.CoursesPage;
 import com.example.loginmodule.Profile.LoginPage;
 import com.example.loginmodule.Profile.ProfilePage;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class HomePage extends AppCompatActivity {
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +40,7 @@ public class HomePage extends AppCompatActivity {
     }
 
     public void onClickProfile(View view){
-        Intent intent = new Intent(this, ProfilePage.class);
+        Intent intent = new Intent(this, CourseCreatePage.class);
         startActivity(intent);
     }
     public void onClickLogout(View view){

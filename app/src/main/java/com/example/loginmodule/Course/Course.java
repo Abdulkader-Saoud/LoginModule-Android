@@ -1,26 +1,22 @@
 package com.example.loginmodule.Course;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Course {
-    private String courseName;
-    private String courseCode;
-    private String courseContent;
+    private String courseName,courseCode;
     private Integer stdNum;
     private ArrayList<String> courseInstructors;
+    private String creator;
+    private Date startDate, endDate;
 
-    public Course(String courseName, String courseCode, String courseContent, Integer stdNum, ArrayList<String> courseInstructors) {
+    public Course(String courseName,String courseCode, Date startDate, Date endDate, ArrayList<String> courseInstructors, String creator) {
         this.courseName = courseName;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.courseCode = courseCode;
-        this.courseContent = courseContent;
-        this.stdNum = stdNum;
         this.courseInstructors = courseInstructors;
-    }
-    public Course(String courseName, String courseContent, Integer stdNum) {
-        this.courseName = courseName;
-        this.courseContent = courseContent;
-        this.stdNum = stdNum;
-        this.courseInstructors = new ArrayList<>();
+        this.creator = creator;
     }
     public String getCourseName() {
         return courseName;
@@ -38,13 +34,7 @@ public class Course {
         this.courseCode = courseCode;
     }
 
-    public String getCourseContent() {
-        return courseContent;
-    }
 
-    public void setCourseContent(String courseContent) {
-        this.courseContent = courseContent;
-    }
 
     public Integer getStdNum() {
         return stdNum;
@@ -57,13 +47,12 @@ public class Course {
     public ArrayList<String> getCourseInstructors() {
         return courseInstructors;
     }
-    public void setCourseInstructors(ArrayList<String> courseInstructors) {
-        this.courseInstructors = courseInstructors;
+
+    public Boolean hasInstructor(String instructor){
+        return courseInstructors.contains(instructor);
     }
-    public void addInstructor(String instructor){
-        courseInstructors.add(instructor);
+    public Boolean isCreator(String uid){
+        return creator.equals(uid);
     }
-    public void removeInstructor(String instructor){
-        courseInstructors.remove(instructor);
-    }
+
 }

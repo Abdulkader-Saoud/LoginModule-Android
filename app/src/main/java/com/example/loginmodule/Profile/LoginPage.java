@@ -25,6 +25,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.util.Map;
 
 public class LoginPage extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -64,9 +67,9 @@ public class LoginPage extends AppCompatActivity {
         if (user == null) {
             return;
         }
-        if (!user.isEmailVerified()) {
-            return;
-        }
+//        if (!user.isEmailVerified()) {
+//            return;
+//        }
         if (sharedPref.getString(getString(R.string.prefKey_stdID), null) != null && sharedPref.getString(getString(R.string.prefKey_email), null) != null){
             Intent intent = new Intent(LoginPage.this, HomePage.class);
             startActivity(intent);
@@ -74,19 +77,36 @@ public class LoginPage extends AppCompatActivity {
         }
         String Uid = user.getUid();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Users").document(Uid)
+        db.collection("Users")
+                .whereEqualTo("uid", Uid)
                 .get()
-                .addOnSuccessListener(aVoid -> {
-                    if (aVoid.getData() != null) {
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()){
+                        QueryDocumentSnapshot aVoid;
+                        try {
+                            aVoid = (QueryDocumentSnapshot) task.getResult().getDocuments().get(0);
+                        } catch (Exception e) {
+                            Intent intent = new Intent(LoginPage.this, RegisterPage.class);
+                            startActivity(intent);
+                            return;
+                        }
+                        Map<String, Object> data = aVoid.getData();
                         SharedPreferences.Editor editor = sharedPref.edit();
 
-                        editor.putString(getString(R.string.prefKey_fName), aVoid.getString("fname"));
-                        editor.putString(getString(R.string.prefKey_stdID), aVoid.getString("stdID"));
-                        editor.putString(getString(R.string.prefKey_accType), aVoid.getString("accType"));
+                        editor.putString(getString(R.string.prefKey_fName), (String) data.get("fname"));
+                        editor.putString(getString(R.string.prefKey_stdID), (String) data.get("stdID"));
+                        editor.putString(getString(R.string.prefKey_accType), (String) data.get("accountType"));
                         editor.apply();
+                        if (sharedPref.getString(getString(R.string.prefKey_accType), null) == null){
+                            Toast toast = Toast.makeText(LoginPage.this, "NULLL",
+                                    Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                        else {
+                            Intent intent = new Intent(LoginPage.this, HomePage.class);
+                            startActivity(intent);
+                        }
 
-                        Intent intent = new Intent(LoginPage.this, HomePage.class);
-                        startActivity(intent);
                     }
                     else {
                         Intent intent = new Intent(LoginPage.this, RegisterPage.class);
@@ -126,12 +146,12 @@ public class LoginPage extends AppCompatActivity {
                             toast.show();
                             return;
                         }
-                        if (!user.isEmailVerified()) {
-                            Toast toast = Toast.makeText(LoginPage.this, "Verify your email.",
-                                    Toast.LENGTH_SHORT);
-                            toast.show();
-                            return;
-                        }
+//                        if (!user.isEmailVerified()) {
+//                            Toast toast = Toast.makeText(LoginPage.this, "Verify your email.",
+//                                    Toast.LENGTH_SHORT);
+//                            toast.show();
+//                            return;
+//                        }
 
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString(getString(R.string.prefKey_email), emailstr);
@@ -163,11 +183,11 @@ public class LoginPage extends AppCompatActivity {
             toast.show();
             return;
         }
-//        else if (!emailstr.contains("@") || !emailstr.contains("yildiz.edu")){
-//            Toast toast = Toast.makeText(this, "Only yildiz mails are accepted", Toast.LENGTH_SHORT);
-//            toast.show();
-//            return;
-//        }
+        else if (!emailstr.contains("@") || !emailstr.contains("yildiz.edu")){
+            Toast toast = Toast.makeText(this, "Only yildiz mails are accepted", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
         progressBar.setVisibility(View.VISIBLE);
 
         mAuth.createUserWithEmailAndPassword(emailstr, passwordstr)
@@ -182,10 +202,10 @@ public class LoginPage extends AppCompatActivity {
                             toast.show();
                             return;
                         }
-                        user.sendEmailVerification();
-                        Toast toast = Toast.makeText(LoginPage.this, "Verify your email.",
-                                Toast.LENGTH_SHORT);
-                        toast.show();
+//                        user.sendEmailVerification();
+//                        Toast toast = Toast.makeText(LoginPage.this, "Verify your email.",
+//                                Toast.LENGTH_SHORT);
+//                        toast.show();
 
                     } else {
                         // If sign in fails, display a message to the user.

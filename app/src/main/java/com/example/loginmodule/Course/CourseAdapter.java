@@ -2,6 +2,7 @@ package com.example.loginmodule.Course;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +19,14 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
 
     private final Context context;
     private final ArrayList<Course> courseModelArrayList;
+    private String uid, accountType;
 
     public CourseAdapter(Context context, ArrayList<Course> courseModelArrayList) {
         this.context = context;
         this.courseModelArrayList = courseModelArrayList;
+
+        uid = context.getSharedPreferences("login", Context.MODE_PRIVATE).getString(context.getString(R.string.prefKey_stdID), null);
+        accountType = context.getSharedPreferences("login", Context.MODE_PRIVATE).getString(context.getString(R.string.prefKey_accType), null);
     }
 
     @NonNull
@@ -36,8 +41,27 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Course course = courseModelArrayList.get(position);
         holder.courseNameTV.setText(course.getCourseName());
-        holder.courseContentTV.setText(course.getStdNum() + " | " + course.getCourseContent());
-//        holder.courseAttendenceIV.setImageResource(course.getCourseAttendence());
+        holder.courseContentTV.setText(course.getCourseCode());
+
+        if (accountType.equals("Instructor")) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (course.isCreator(uid)) {
+                        Intent intent = new Intent(context, CourseCreatePage.class);
+                        intent.putExtra("docID", course.getCourseCode());
+                        context.startActivity(intent);
+                    }
+                    else {
+                        Intent intent = new Intent(context, CourseGroupPage.class);
+                        intent.putExtra("docID", course.getCourseCode());
+                        context.startActivity(intent);
+                    }
+                }
+            });
+        }
+
+
     }
 
 

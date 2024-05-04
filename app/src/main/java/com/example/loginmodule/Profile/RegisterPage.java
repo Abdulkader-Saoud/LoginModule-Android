@@ -73,9 +73,10 @@ public class RegisterPage extends AppCompatActivity {
         user.put("fname", fnameET.getText().toString());
         user.put("lname", lnameET.getText().toString());
         user.put("stdID", stdIDET.getText().toString());
+        user.put("uid", Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
         user.put("accountType", accountType);
 
-        String Uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        String Uid = Objects.requireNonNull(user.get("stdID")).toString();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.collection("Users").document(Uid)
@@ -88,6 +89,7 @@ public class RegisterPage extends AppCompatActivity {
                     editor.putString(getString(R.string.prefKey_fName), user.get("fname").toString());
                     editor.putString(getString(R.string.prefKey_stdID), user.get("stdID").toString());
                     editor.putString(getString(R.string.prefKey_accType), user.get("accountType").toString());
+
                     editor.apply();
 
                     Intent intent = new Intent(RegisterPage.this, HomePage.class);

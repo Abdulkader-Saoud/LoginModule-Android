@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,8 +36,10 @@ public class CourseCreatePage extends AppCompatActivity implements DatePickerFra
     private EditText coursenameET, courseidET, instructorET;
     private String seChoice, docID;
     private int startYear, startMonth, startDay , endYear, endMonth, endDay;
-    ArrayList<String> instructors;
     private String uid;
+    private ArrayList<String> instructors;
+    private ArrayAdapter<String> instructorsAdapter;
+    private ListView instructorsLV;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +55,6 @@ public class CourseCreatePage extends AppCompatActivity implements DatePickerFra
 
         Intent thisintent = getIntent();
         docID = thisintent.getStringExtra("docID");
-        Toast.makeText(this, "Editing course " + docID, Toast.LENGTH_SHORT).show();
         mAuth = FirebaseAuth.getInstance();
         setupUI();
         if (docID == null) {
@@ -76,6 +79,8 @@ public class CourseCreatePage extends AppCompatActivity implements DatePickerFra
             datePickerFragment.setDateSetListener(this);
             datePickerFragment.show(getSupportFragmentManager(), "date picker");
         });
+
+
     }
 
     @Override
@@ -157,6 +162,7 @@ public class CourseCreatePage extends AppCompatActivity implements DatePickerFra
 
         saveBTN.setOnClickListener(v -> saveCourse());
         addgroupBTN.setOnClickListener(v -> handleAddGroup());
+
     }
     private void handleAddGroup() {
         String instructorID = instructorET.getText().toString();
@@ -168,19 +174,19 @@ public class CourseCreatePage extends AppCompatActivity implements DatePickerFra
             Toast.makeText(this, "Please fill in instructor ID", Toast.LENGTH_SHORT).show();
             return;
         }
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Users").document(instructorID)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         if (Objects.equals(documentSnapshot.getString("accountType"), "Instructor")) {
-                            // Instructor is valid
+
                             HashMap<String, Object> data = new HashMap<>();
                             data.put("instructorID", instructorID);
                             data.put("students", new ArrayList<String>());
                             instructors.add(instructorID);
-
+                            instructorsAdapter.notifyDataSetChanged();
                             db.collection("CourseGroups").document(docID + instructorID)
                                     .set(data)
                                     .addOnSuccessListener(aVoid -> {
@@ -189,10 +195,7 @@ public class CourseCreatePage extends AppCompatActivity implements DatePickerFra
                                                 .update("instructors", instructors)
                                                 .addOnSuccessListener(aVoid1 -> {
                                                     Log.d("CC AddGroup", "Instructor added to course");
-                                                    // Start CourseGroupPage activity after successful addition
-                                                    Intent intent = new Intent(this, CourseGroupPage.class);
-                                                    intent.putExtra("courseid", docID);
-                                                    startActivity(intent);
+                                                    Toast.makeText(this, "Instructor added to course", Toast.LENGTH_SHORT).show();
                                                 })
                                                 .addOnFailureListener(e -> Log.d("CC AddGroup", "Error adding instructor to course"));
                                     })
@@ -217,6 +220,7 @@ public class CourseCreatePage extends AppCompatActivity implements DatePickerFra
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
+                        Map<String, Object> data = documentSnapshot.getData();
                         coursenameET.setText(documentSnapshot.getString("coursename"));
                         courseidET.setText(documentSnapshot.getString("courseid"));
                         Date startDate = documentSnapshot.getDate("startdate");
@@ -228,7 +232,19 @@ public class CourseCreatePage extends AppCompatActivity implements DatePickerFra
                         endMonth = endDate.getMonth();
                         endDay = endDate.getDay();
                         updateDate(false);
-                        instructors = (ArrayList<String>) documentSnapshot.get("instructors");
+                        instructors = (ArrayList<String>) data.get("instructors");
+                        instructorsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, instructors);
+                        instructorsLV = findViewById(R.id.instructorsLV);
+                        instructorsLV.setAdapter(instructorsAdapter);
+                        instructorsLV.setOnItemClickListener((adapterView, view, i, l) -> {
+                            if (uid.equals(instructors.get(i))){
+                                Intent intent = new Intent(this, CourseGroupPage.class);
+                                intent.putExtra("docID", docID + instructors.get(i));
+                                startActivity(intent);
+                            }else {
+                                Toast.makeText(this, "You are not the Instructor of this course", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                     else {
                         Toast.makeText(this, "Course not found", Toast.LENGTH_SHORT).show();

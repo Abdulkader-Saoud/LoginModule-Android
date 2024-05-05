@@ -15,4 +15,7 @@
     <color name="semiD">#393E46</color>
     <color name="fullD">#222831</color>
     <color name="grey">#888E9A</color>
+    <color name="attending">#E39F4B</color>
+    <color name="complete">#4BE36C</color>
+    <color name="not_started">#31363F</color>
 </resources>

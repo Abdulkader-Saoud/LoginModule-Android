@@ -1,5 +1,6 @@
 package com.example.loginmodule.Course;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.loginmodule.HomePage;
 import com.example.loginmodule.R;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,7 +27,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CoursesPage extends AppCompatActivity {
-    private FirebaseAuth mAuth;
     private ArrayList<Course> courseModelArrayList = new ArrayList<Course>();
     private String uid,accountType;
     private RecyclerView courseRV;
@@ -42,8 +43,6 @@ public class CoursesPage extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
         uid = sharedPreferences.getString(getString(R.string.prefKey_stdID), null);
         accountType = sharedPreferences.getString(getString(R.string.prefKey_accType), null);
-        Log.d("fetchCourses", accountType +  "  TPYEEE");
-        mAuth = FirebaseAuth.getInstance();
 
         courseRV = findViewById(R.id.coursesRV);
         courseRV.setEnabled(false);
@@ -52,8 +51,9 @@ public class CoursesPage extends AppCompatActivity {
     }
     private void setupLV() {
         if (courseModelArrayList.isEmpty()) {
-            Course course = new Course("No courses found", "No courses found", new Date(), new Date(), null, "");
-            courseModelArrayList.add(course);
+            Toast.makeText(this, "No courses found", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, HomePage.class);
+            startActivity(intent);
         }
         CourseAdapter courseAdapter = new CourseAdapter(this, courseModelArrayList);
 
@@ -65,19 +65,17 @@ public class CoursesPage extends AppCompatActivity {
     }
     private void fetchCourses() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Log.d("fetchCourses", "fetching courses");
         if (accountType.equals("Instructor")) {
-            Log.d("fetchCourses", "fetching courses");
             db.collection("Courses")
-                    .whereEqualTo("creator", uid)
                     .get()
                     .addOnCompleteListener(task -> {
-                        Log.d("fetchCourses", "fetching courses");
                         if (task.isSuccessful()) {
-                            Log.d("fetchCourses", "fetching courses successful");
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Map<String, Object> courseData = document.getData();
-                                Log.d("fetchCourses", "fetching courses found one");
+                                if (!(courseData.get("creator").equals(uid)) && !((ArrayList<String>) courseData.get("instructors")).contains(uid))
+                                {
+                                    continue;
+                                }
                                 if (courseData != null && courseData.containsKey("coursename") &&
                                         courseData.containsKey("courseid") &&
                                         courseData.containsKey("startdate") &&
@@ -99,6 +97,7 @@ public class CoursesPage extends AppCompatActivity {
                                     Log.e("fetchCourses", "Course data is missing or incorrect");
                                 }
                             }
+
                             setupLV();
                         } else {
                             Log.e("fetchCourses", "Error getting courses", task.getException());
@@ -107,6 +106,7 @@ public class CoursesPage extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Student", Toast.LENGTH_SHORT).show();
         }
+
     }
 
 }

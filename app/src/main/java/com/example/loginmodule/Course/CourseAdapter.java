@@ -27,6 +27,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
 
         uid = context.getSharedPreferences("login", Context.MODE_PRIVATE).getString(context.getString(R.string.prefKey_stdID), null);
         accountType = context.getSharedPreferences("login", Context.MODE_PRIVATE).getString(context.getString(R.string.prefKey_accType), null);
+
     }
 
     @NonNull
@@ -42,21 +43,19 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
         Course course = courseModelArrayList.get(position);
         holder.courseNameTV.setText(course.getCourseName());
         holder.courseContentTV.setText(course.getCourseCode());
-
+        if (course.getCurrentTimeInfo().equals("Attending")) {
+            holder.courseAttendenceIV.setBackgroundColor(context.getResources().getColor(R.color.attending));
+        } else if (course.getCurrentTimeInfo().equals("Complete")) {
+            holder.courseAttendenceIV.setBackgroundColor(context.getResources().getColor(R.color.complete));
+        } else {
+            holder.courseAttendenceIV.setBackgroundColor(context.getResources().getColor(R.color.not_started));
+        }
         if (accountType.equals("Instructor")) {
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (course.isCreator(uid)) {
-                        Intent intent = new Intent(context, CourseCreatePage.class);
-                        intent.putExtra("docID", course.getCourseCode());
-                        context.startActivity(intent);
-                    }
-                    else {
-                        Intent intent = new Intent(context, CourseGroupPage.class);
-                        intent.putExtra("docID", course.getCourseCode());
-                        context.startActivity(intent);
-                    }
+            holder.itemView.setOnClickListener(v -> {
+                if (course.isCreator(uid) || course.hasInstructor(uid)) {
+                    Intent intent = new Intent(context, CourseCreatePage.class);
+                    intent.putExtra("docID", course.getCourseCode());
+                    context.startActivity(intent);
                 }
             });
         }

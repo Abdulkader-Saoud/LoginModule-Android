@@ -1,5 +1,7 @@
 package com.example.loginmodule.Course;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -9,6 +11,8 @@ public class Course {
     private ArrayList<String> courseInstructors;
     private String creator;
     private Date startDate, endDate;
+    private String timeInfo;// Not Started - Attending - Complete
+
 
     public Course(String courseName,String courseCode, Date startDate, Date endDate, ArrayList<String> courseInstructors, String creator) {
         this.courseName = courseName;
@@ -17,6 +21,17 @@ public class Course {
         this.courseCode = courseCode;
         this.courseInstructors = courseInstructors;
         this.creator = creator;
+        this.timeInfo = "Not Started";
+        Log.d("Course", "Course: "+courseName+" " );
+        for (String instructor: courseInstructors){
+            Log.d("Course", "Course: "+instructor+" " );
+        }
+        Date currentDate = new Date();
+        if(currentDate.after(startDate) && currentDate.before(endDate)){
+            this.timeInfo = "Attending";
+        }else if(currentDate.after(endDate)){
+            this.timeInfo = "Complete";
+        }
     }
     public String getCourseName() {
         return courseName;
@@ -33,7 +48,9 @@ public class Course {
     public void setCourseCode(String courseCode) {
         this.courseCode = courseCode;
     }
-
+    public String getCurrentTimeInfo(){
+        return timeInfo;
+    }
 
 
     public Integer getStdNum() {

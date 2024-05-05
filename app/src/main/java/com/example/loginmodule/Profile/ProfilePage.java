@@ -71,7 +71,7 @@ public class ProfilePage extends AppCompatActivity {
         etTwitter = findViewById(R.id.etTwitter);
         checkboxSocials = findViewById(R.id.checkboxSocials);
         checkboxContact = findViewById(R.id.checkboxContact);
-        saveBtn = findViewById(R.id.saveButton);
+        saveBtn = findViewById(R.id.laodCSVBTN);
         forwardBtn = findViewById(R.id.forwardButton);
         passButton = findViewById(R.id.passButton);
 

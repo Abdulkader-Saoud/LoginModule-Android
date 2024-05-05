@@ -70,7 +70,7 @@ public class LoginPage extends AppCompatActivity {
 //        if (!user.isEmailVerified()) {
 //            return;
 //        }
-        if (sharedPref.getString(getString(R.string.prefKey_stdID), null) != null && sharedPref.getString(getString(R.string.prefKey_email), null) != null){
+        if (sharedPref.getString(getString(R.string.prefKey_stdID), null) != null && sharedPref.getString(getString(R.string.prefKey_email), null) != null && sharedPref.getString(getString(R.string.prefKey_accType), null) != null){
             Intent intent = new Intent(LoginPage.this, HomePage.class);
             startActivity(intent);
             return;
@@ -114,6 +114,7 @@ public class LoginPage extends AppCompatActivity {
                     }
                 })
                 .addOnFailureListener( e -> {
+                    Log.e(TAG, "Error getting documents: ", e);
                     Toast toast = Toast.makeText(LoginPage.this, "Something went wrong.",
                             Toast.LENGTH_SHORT);
                     toast.show();

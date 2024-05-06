@@ -42,7 +42,7 @@ public class ProfilePage extends AppCompatActivity {
     private ConstraintLayout dataLayout;
     private SharedPreferences sharedPreferences;
     private Spinner spinneredu;
-    private Button saveBtn, forwardBtn, passButton;
+    private Button saveBtn, forwardBtn, passButton, logoutButton;
     private CheckBox checkboxSocials,checkboxContact;
 
     @Override
@@ -74,17 +74,29 @@ public class ProfilePage extends AppCompatActivity {
         saveBtn = findViewById(R.id.laodCSVBTN);
         forwardBtn = findViewById(R.id.forwardButton);
         passButton = findViewById(R.id.passButton);
+        logoutButton = findViewById(R.id.logoutButton);
+
 
         profilePic.setOnClickListener(v -> openCamera());
         saveBtn.setOnClickListener(v -> saveToFirebase());
         forwardBtn.setOnClickListener(v -> forward());
         passButton.setOnClickListener(v -> passwrodChange());
+        logoutButton.setOnClickListener(v -> onClickLogout());
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         fetchProfileData();
+    }
+    public void onClickLogout(){
+        SharedPreferences sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(this, LoginPage.class);
+        startActivity(intent);
     }
     private void forward(){
         String message = "Hello, Im " + fname.getText().toString()  + " " + lname.getText().toString() + "." ;

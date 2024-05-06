@@ -21,17 +21,20 @@ public class Course {
         this.courseCode = courseCode;
         this.courseInstructors = courseInstructors;
         this.creator = creator;
-        this.timeInfo = "Not Started";
         Log.d("Course", "Course: "+courseName+" " );
         for (String instructor: courseInstructors){
             Log.d("Course", "Course: "+instructor+" " );
         }
+        this.timeInfo = "Attending";
         Date currentDate = new Date();
-        if(currentDate.after(startDate) && currentDate.before(endDate)){
-            this.timeInfo = "Attending";
-        }else if(currentDate.after(endDate)){
+        if (currentDate.after(endDate)){
             this.timeInfo = "Complete";
         }
+    }
+
+    public String getStartandEndDate() {
+        // only day month and year
+        return startDate.toString().substring(0,10) + " - " + endDate.toString().substring(0,10);
     }
     public String getCourseName() {
         return courseName;

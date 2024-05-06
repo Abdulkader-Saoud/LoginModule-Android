@@ -20,49 +20,45 @@
         android:layout_marginTop="50sp"
         />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <ImageButton
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="80dp"
+        android:backgroundTint="#00FFFFFF"
+        android:src="@drawable/prorfile_image"
         android:id="@+id/buttonProfile"
+        />
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/filledroundbox"
-        android:backgroundTint="@color/blue"
         android:text="Profile"
-        android:layout_marginTop="30sp"
-        android:layout_marginStart="75sp"
-        android:layout_marginEnd="75sp"
-        android:fontFamily="@font/roboto_regular"
+        android:textAlignment="center"
+        android:fontFamily="@font/roboto_bold"
         android:textColor="@color/white"
-        android:textSize="24sp"
+        android:textSize="30sp"
         />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <ImageButton
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="35dp"
+        android:backgroundTint="#00FFFFFF"
+        android:src="@drawable/course_image"
         android:id="@+id/buttonCourses"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/filledroundbox"
-        android:backgroundTint="@color/blue"
-        android:text="Courses"
-        android:layout_marginTop="30sp"
-        android:layout_marginStart="75sp"
-        android:layout_marginEnd="75sp"
-        android:fontFamily="@font/roboto_regular"
-        android:textColor="@color/white"
-        android:textSize="24sp"
         />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonLogout"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/filledroundbox"
-        android:backgroundTint="@color/blue"
-        android:text="logout"
-        android:layout_marginTop="30sp"
-        android:layout_marginStart="75sp"
-        android:layout_marginEnd="75sp"
-        android:fontFamily="@font/roboto_regular"
+        android:text="Courses"
+        android:textAlignment="center"
+        android:fontFamily="@font/roboto_bold"
         android:textColor="@color/white"
-        android:textSize="24sp"
+        android:textSize="30sp"
         />
+
 
 </android.widget.LinearLayout>

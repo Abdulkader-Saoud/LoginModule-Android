@@ -41,8 +41,11 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Course course = courseModelArrayList.get(position);
+
         holder.courseNameTV.setText(course.getCourseName());
-        holder.courseContentTV.setText(course.getCourseCode());
+        holder.courseCodeTV.setText(course.getCourseCode());
+        holder.courseDateTV.setText(course.getStartandEndDate());
+
         if (course.getCurrentTimeInfo().equals("Attending")) {
             holder.courseAttendenceIV.setBackgroundColor(context.getResources().getColor(R.color.attending));
         } else if (course.getCurrentTimeInfo().equals("Complete")) {
@@ -71,14 +74,16 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView courseNameTV;
-        private TextView courseContentTV;
+        private TextView courseCodeTV;
+        private TextView courseDateTV;
         private ImageView courseAttendenceIV;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             courseNameTV = itemView.findViewById(R.id.courseName);
-            courseContentTV = itemView.findViewById(R.id.courseContent);
+            courseCodeTV = itemView.findViewById(R.id.courseCode);
             courseAttendenceIV = itemView.findViewById(R.id.attendenceImage);
+            courseDateTV = itemView.findViewById(R.id.courseDate);
         }
     }
 }

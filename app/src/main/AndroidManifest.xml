@@ -60,6 +60,9 @@
             android:name=".Profile.Camera"
             android:exported="false"
             android:theme="@style/Theme.LoginModule" />
+        <activity android:name=".Profile.ProfilePage"
+            android:exported="false"
+            android:theme="@style/Theme.LoginModule" />
         <activity
             android:name=".HomePage"
             android:exported="false"

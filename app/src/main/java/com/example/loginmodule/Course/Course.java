@@ -11,7 +11,7 @@ public class Course {
     private ArrayList<String> courseInstructors;
     private String creator;
     private Date startDate, endDate;
-    private String timeInfo;// Not Started - Attending - Complete
+    private String timeInfo;// Attending - Complete
 
 
     public Course(String courseName,String courseCode, Date startDate, Date endDate, ArrayList<String> courseInstructors, String creator) {
@@ -27,9 +27,10 @@ public class Course {
         }
         this.timeInfo = "Attending";
         Date currentDate = new Date();
-        if (currentDate.after(endDate)){
+        if (endDate.after(currentDate)){
             this.timeInfo = "Complete";
         }
+
     }
 
     public String getStartandEndDate() {
@@ -66,6 +67,9 @@ public class Course {
 
     public ArrayList<String> getCourseInstructors() {
         return courseInstructors;
+    }
+    public String getTimeInfo(){
+        return timeInfo;
     }
 
     public Boolean hasInstructor(String instructor){

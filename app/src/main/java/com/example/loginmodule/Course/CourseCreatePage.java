@@ -61,7 +61,6 @@ public class CourseCreatePage extends AppCompatActivity implements DatePickerFra
             instructors = new ArrayList<>();
         }
         else {
-
             fetchUI();
         }
 
@@ -101,9 +100,10 @@ public class CourseCreatePage extends AppCompatActivity implements DatePickerFra
     private void saveCourse() {
         String coursename = coursenameET.getText().toString();
         String courseid = courseidET.getText().toString();
-        Date startDate = new Date(startYear, startMonth, startDay);
-        Date endDate = new Date(endYear, endMonth, endDay);
+        Date startDate = new Date(startYear -1900, startMonth, startDay);
+        Date endDate = new Date(endYear -1900, endMonth, endDay);
 
+        Log.d("CC SaveCourse", "saveCourse: " + startDate + " " + endDate);
         if (coursename.isEmpty() || courseid.isEmpty()) {
             Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             return;
@@ -181,11 +181,13 @@ public class CourseCreatePage extends AppCompatActivity implements DatePickerFra
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         if (Objects.equals(documentSnapshot.getString("accountType"), "Instructor")) {
-
                             HashMap<String, Object> data = new HashMap<>();
                             data.put("instructorID", instructorID);
                             data.put("students", new ArrayList<String>());
                             instructors.add(instructorID);
+                            if (instructorsAdapter == null){
+                                instructorsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, instructors);
+                            }
                             instructorsAdapter.notifyDataSetChanged();
                             db.collection("CourseGroups").document(docID + instructorID)
                                     .set(data)

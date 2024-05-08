@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -35,6 +36,8 @@ public class CourseGroupPage extends AppCompatActivity {
     private ArrayList<String> studentsList = new ArrayList<>();
     private ArrayAdapter<String> studentAdapter;
     private String docID,uid;
+    private TextView stdCountTV;
+    private int stdCount = 0;
 
     private static final int PICK_CSV_FILE_REQUEST_CODE = 123;
 
@@ -57,6 +60,8 @@ public class CourseGroupPage extends AppCompatActivity {
         saveBTN = findViewById(R.id.saveBTN);
         deleteBTN = findViewById(R.id.deleteBTN);
         laodCSVBTN = findViewById(R.id.laodCSVBTN);
+        stdCountTV = findViewById(R.id.studentsTV);
+
         laodCSVBTN.setOnClickListener(view -> loadCSVHandler());
 
         saveBTN.setOnClickListener(view -> saveData());
@@ -73,11 +78,17 @@ public class CourseGroupPage extends AppCompatActivity {
                 studentsList = (ArrayList<String>) documentSnapshot.get("students");
                 studentAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, studentsList);
                 studentsLV.setAdapter(studentAdapter);
+                showStdCount();
                 studentsLV.setOnItemClickListener((adapterView, view, i, l) -> {
                     studentsList.remove(i);
                     studentsLV.setAdapter(studentAdapter);
+                    showStdCount();
                 });}
         });
+    }
+    private void showStdCount(){
+        stdCount = studentsList.size();
+        stdCountTV.setText("Students: "+stdCount);
     }
     private void addInstructor() {
         String instructorID = studentIDET.getText().toString();
@@ -119,6 +130,7 @@ public class CourseGroupPage extends AppCompatActivity {
                         }
                         inputStream.close();
                         studentAdapter.notifyDataSetChanged();
+                        showStdCount();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

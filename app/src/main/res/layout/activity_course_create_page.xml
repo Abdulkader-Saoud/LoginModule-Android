@@ -27,7 +27,7 @@
             android:paddingTop="20sp"/>
 
         <TextView
-            android:id="@+id/cidTF"
+            android:id="@+id/scopeTitleTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_regular"
@@ -51,7 +51,7 @@
             android:minHeight="48dp"
             android:textColor="@color/white"
             android:textColorHint="@color/grey"
-            app:layout_constraintStart_toEndOf="@id/cidTF"
+            app:layout_constraintStart_toEndOf="@id/scopeTitleTV"
             app:layout_constraintTop_toBottomOf="@+id/title"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="30sp"

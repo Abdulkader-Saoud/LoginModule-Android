@@ -75,6 +75,9 @@ public class Course {
     public Boolean hasInstructor(String instructor){
         return courseInstructors.contains(instructor);
     }
+    public Date getStartDate() {
+        return startDate;
+    }
     public Boolean isCreator(String uid){
         return creator.equals(uid);
     }

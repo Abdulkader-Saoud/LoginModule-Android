@@ -95,7 +95,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/cidTF"
+        android:id="@+id/scopeTitleTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/h1"

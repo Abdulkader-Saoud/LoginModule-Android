@@ -13,6 +13,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.loginmodule.Course.CoursesPage;
 import com.example.loginmodule.Profile.ProfilePage;
+import com.example.loginmodule.Report.CreateReport;
+
 public class HomePage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,8 @@ public class HomePage extends AppCompatActivity {
     }
 
     public void onClickProfile(View view){
-        Intent intent = new Intent(this, ProfilePage.class);
+//        Intent intent = new Intent(this, ProfilePage.class);
+        Intent intent = new Intent(this, CreateReport.class);
         startActivity(intent);
     }
 

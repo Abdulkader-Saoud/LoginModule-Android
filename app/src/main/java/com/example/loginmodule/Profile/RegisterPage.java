@@ -31,6 +31,7 @@ public class RegisterPage extends AppCompatActivity {
     private EditText fnameET, lnameET, stdIDET;
     private Map<String, Object> user = new HashMap<>();
     private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +75,7 @@ public class RegisterPage extends AppCompatActivity {
         user.put("lname", lnameET.getText().toString());
         user.put("stdID", stdIDET.getText().toString());
         user.put("uid", Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+        user.put("ACCemail", email);
         user.put("accountType", accountType);
 
         String Uid = Objects.requireNonNull(user.get("stdID")).toString();

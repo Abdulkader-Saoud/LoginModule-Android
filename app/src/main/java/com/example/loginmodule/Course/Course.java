@@ -4,8 +4,10 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.io.Serializable;
 
-public class Course {
+public class Course implements Serializable {
+    private static final long serialVersionUID = 123;
     private String courseName,courseCode;
     private Integer stdNum;
     private ArrayList<String> courseInstructors;
@@ -27,7 +29,7 @@ public class Course {
         }
         this.timeInfo = "Attending";
         Date currentDate = new Date();
-        if (endDate.after(currentDate)){
+        if (endDate.before(currentDate)){
             this.timeInfo = "Complete";
         }
 

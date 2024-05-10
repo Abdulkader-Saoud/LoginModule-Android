@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CourseGroupPage extends AppCompatActivity {
     private EditText studentIDET;
@@ -139,8 +141,11 @@ public class CourseGroupPage extends AppCompatActivity {
         }
     }
     private void saveData() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("students", studentsList);
+        data.put("count", stdCount);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("CourseGroups").document(docID).update("students", studentsList).addOnSuccessListener(aVoid -> {
+        db.collection("CourseGroups").document(docID).update(data).addOnSuccessListener(aVoid -> {
             Toast toast = Toast.makeText(this, "Students added successfully", Toast.LENGTH_SHORT);
             toast.show();
         });

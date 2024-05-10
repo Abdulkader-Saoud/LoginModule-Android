@@ -2,14 +2,12 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:layout_height="150dp"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="8dp"
     app:cardElevation="8dp"
-    app:cardMaxElevation="10dp"
-    app:cardPreventCornerOverlap="true"
-    app:cardUseCompatPadding="true">
+    app:cardUseCompatPadding="true"
+    android:layout_margin="-10dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -57,5 +55,18 @@
             android:layout_toEndOf="@id/attendenceImage"
             android:drawablePadding="2dp"
             android:text="10/10/2024 - 11/11/2025" />
+
+        <ImageButton
+            android:id="@+id/editButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/roundbox"
+            android:backgroundTint="@color/white"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/pen_icon"
+            android:contentDescription="edit"
+            android:visibility="gone" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
+

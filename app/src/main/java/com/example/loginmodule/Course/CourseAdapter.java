@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -45,6 +46,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
         holder.courseCodeTV.setText(course.getCourseCode());
         holder.courseDateTV.setText(course.getStartandEndDate());
 
+
         if (course.getCurrentTimeInfo().equals("Attending")) {
             holder.courseAttendenceIV.setBackgroundColor(context.getResources().getColor(R.color.attending));
         } else if (course.getCurrentTimeInfo().equals("Complete")) {
@@ -52,17 +54,20 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
         } else {
             holder.courseAttendenceIV.setBackgroundColor(context.getResources().getColor(R.color.not_started));
         }
+
         if (accountType.equals("Instructor")) {
-            holder.itemView.setOnClickListener(v -> {
-                if (course.isCreator(uid) || course.hasInstructor(uid)) {
-                    Intent intent = new Intent(context, CourseCreatePage.class);
-                    intent.putExtra("docID", course.getCourseCode());
-                    context.startActivity(intent);
-                }
+            holder.editButton.setVisibility(View.VISIBLE);
+            holder.editButton.setOnClickListener(v -> {
+                Intent intent = new Intent(context, CourseCreatePage.class);
+                intent.putExtra("docID", course.getCourseCode());
+                context.startActivity(intent);
             });
         }
-
-
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, CoursePage.class);
+            intent.putExtra("course", course);
+            context.startActivity(intent);
+        });
     }
 
 
@@ -72,6 +77,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        public ImageButton editButton;
         private TextView courseNameTV;
         private TextView courseCodeTV;
         private TextView courseDateTV;
@@ -83,6 +89,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
             courseCodeTV = itemView.findViewById(R.id.courseCode);
             courseAttendenceIV = itemView.findViewById(R.id.attendenceImage);
             courseDateTV = itemView.findViewById(R.id.courseDate);
+            editButton = itemView.findViewById(R.id.editButton);
         }
     }
 }

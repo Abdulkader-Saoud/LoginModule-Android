@@ -7,4 +7,73 @@
     android:layout_height="match_parent"
     tools:context=".Course.CoursePage">
 
+    <TextView
+        android:id="@+id/courseNameTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="200dp"
+        android:fontFamily="@font/roboto_bold"
+        android:text="Java Programming"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingTop="20sp"/>
+
+    <TextView
+        android:id="@+id/courseCodeTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_regular"
+        android:text="BLM 1000"
+        android:textColor="@color/grey"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/courseNameTV"
+        android:layout_marginTop="5sp"
+        android:paddingStart="30dp" />
+
+    <TextView
+        android:id="@+id/courseSTDCountTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_bold"
+        android:text="31"
+        android:textColor="@color/grey"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/courseNameTV"
+        android:layout_marginTop="5sp"
+        android:layout_marginRight="30dp"
+        />
+
+    <TextView
+        android:id="@+id/courseINSTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_regular"
+        android:text="Mehmet Amaç GÜVENSAN"
+        android:textColor="@color/grey"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/courseSTDCountTV"
+        android:layout_marginTop="10sp"
+        android:paddingStart="30dp" />
+
+    <ImageButton
+        android:id="@+id/sendMailBTN"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10sp"
+        android:backgroundTint="#00FFFFFF"
+        android:src="@drawable/mail_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/courseSTDCountTV"
+        android:paddingTop="0dp"
+        android:layout_marginRight="30dp"
+        android:contentDescription="send mail" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

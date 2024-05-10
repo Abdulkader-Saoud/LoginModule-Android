@@ -184,6 +184,7 @@ public class CourseCreatePage extends AppCompatActivity implements DatePickerFra
                             HashMap<String, Object> data = new HashMap<>();
                             data.put("instructorID", instructorID);
                             data.put("students", new ArrayList<String>());
+                            data.put("count", 0);
                             instructors.add(instructorID);
                             if (instructorsAdapter == null){
                                 instructorsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, instructors);

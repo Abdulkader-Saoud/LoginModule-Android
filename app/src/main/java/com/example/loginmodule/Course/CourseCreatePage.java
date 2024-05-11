@@ -228,10 +228,10 @@ public class CourseCreatePage extends AppCompatActivity implements DatePickerFra
                         courseidET.setText(documentSnapshot.getString("courseid"));
                         Date startDate = documentSnapshot.getDate("startdate");
                         Date endDate = documentSnapshot.getDate("enddate");
-                        startYear = startDate.getYear();
+                        startYear = startDate.getYear() + 1900;
                         startMonth = startDate.getMonth();
                         startDay = startDate.getDay();
-                        endYear = endDate.getYear();
+                        endYear = endDate.getYear() + 1900;
                         endMonth = endDate.getMonth();
                         endDay = endDate.getDay();
                         updateDate(false);

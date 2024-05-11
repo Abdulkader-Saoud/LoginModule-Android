@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -68,7 +67,7 @@ public class CourseGroupPage extends AppCompatActivity {
 
         saveBTN.setOnClickListener(view -> saveData());
         deleteBTN.setOnClickListener(view -> deleteGroup());
-        addstudentBTN.setOnClickListener(view -> addInstructor());
+        addstudentBTN.setOnClickListener(view -> addStudent());
         Intent intent = getIntent();
         docID = intent.getStringExtra("docID");
         fetchData();
@@ -92,16 +91,17 @@ public class CourseGroupPage extends AppCompatActivity {
         stdCount = studentsList.size();
         stdCountTV.setText("Students: "+stdCount);
     }
-    private void addInstructor() {
-        String instructorID = studentIDET.getText().toString();
-        if(instructorID.isEmpty()){
-            Toast toast = Toast.makeText(this, "Please enter instructor ID", Toast.LENGTH_SHORT);
+    private void addStudent() {
+        String studentID = studentIDET.getText().toString();
+        if(studentID.isEmpty()){
+            Toast toast = Toast.makeText(this, "Please enter student ID", Toast.LENGTH_SHORT);
             toast.show();
             return;
         }
-        studentsList.add(instructorID);
+        studentsList.add(studentID);
         studentAdapter.notifyDataSetChanged();
         studentIDET.setText("");
+        showStdCount();
     }
 
     private void loadCSVHandler() {
@@ -142,6 +142,7 @@ public class CourseGroupPage extends AppCompatActivity {
     }
     private void saveData() {
         Map<String, Object> data = new HashMap<>();
+        stdCount = studentsList.size();
         data.put("students", studentsList);
         data.put("count", stdCount);
         FirebaseFirestore db = FirebaseFirestore.getInstance();

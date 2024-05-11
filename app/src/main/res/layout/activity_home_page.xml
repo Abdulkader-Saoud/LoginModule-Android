@@ -60,5 +60,15 @@
         android:textSize="30sp"
         />
 
+    <ImageButton
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="60dp"
+        android:backgroundTint="#00FFFFFF"
+        android:src="@drawable/eye_icon"
+        android:id="@+id/buttonReport"
+        />
+
 
 </android.widget.LinearLayout>

@@ -110,7 +110,7 @@ public abstract class CourseFetcher extends AppCompatActivity {
                     instructors,
                     courseData.get("creator").toString()
             );
-            if (course.getTimeInfo().equals(filter))
+            if (!filter.equals("None") && !course.getTimeInfo().equals(filter))
                 return;
             coursesArray.add(course);
         }

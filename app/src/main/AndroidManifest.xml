@@ -19,6 +19,12 @@
         android:theme="@style/Theme.LoginModule"
         tools:targetApi="31">
         <activity
+            android:name=".Report.ReportPage"
+            android:exported="false" />
+        <activity
+            android:name=".Report.ReportsPage"
+            android:exported="false" />
+        <activity
             android:name=".Report.CreateReport"
             android:exported="false"
             android:theme="@style/Theme.LoginModule" />

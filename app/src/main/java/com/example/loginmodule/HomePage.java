@@ -1,5 +1,6 @@
 package com.example.loginmodule;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,8 +15,10 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.loginmodule.Course.CoursesPage;
 import com.example.loginmodule.Profile.ProfilePage;
 import com.example.loginmodule.Report.CreateReport;
+import com.example.loginmodule.Report.ReportsPage;
 
 public class HomePage extends AppCompatActivity {
+    private String accountType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,21 +29,38 @@ public class HomePage extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        Context context = getApplicationContext();
+        accountType = context.getSharedPreferences("login", Context.MODE_PRIVATE).getString(context.getString(R.string.prefKey_accType), null);
+
         ImageButton profileButton = findViewById(R.id.buttonProfile);
         ImageButton coursesButton = findViewById(R.id.buttonCourses);
+        ImageButton reportButton = findViewById(R.id.buttonReport);
+
+
         profileButton.setOnClickListener(this::onClickProfile);
         coursesButton.setOnClickListener(this::onClickCourses);
+        reportButton.setOnClickListener(this::onClickReport);
 
     }
 
-    public void onClickProfile(View view){
-//        Intent intent = new Intent(this, ProfilePage.class);
-        Intent intent = new Intent(this, CreateReport.class);
+    private void onClickProfile(View view){
+        Intent intent = new Intent(this, ProfilePage.class);
         startActivity(intent);
     }
 
-    public void onClickCourses(View view){
+    private void onClickCourses(View view){
         Intent intent = new Intent(this, CoursesPage.class);
+        startActivity(intent);
+    }
+
+    private void onClickReport(View view){
+        Intent intent;
+        if (accountType.equals("Instructor")){
+            intent = new Intent(this, ReportsPage.class);
+        }
+        else {
+            intent = new Intent(this, CreateReport.class);
+        }
         startActivity(intent);
     }
 }

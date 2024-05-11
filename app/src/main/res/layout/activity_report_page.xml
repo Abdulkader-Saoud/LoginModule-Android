@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Report.ReportPage">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_bold"
+        android:text="Report"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingTop="20sp"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="60sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        android:layout_marginTop="20sp"
+        android:visibility="invisible"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/CL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingBottom="90sp"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/scopeTitleTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Scope: "
+            android:textColor="@color/light"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/CL"
+            android:layout_marginStart="40sp"
+            android:layout_marginTop="40sp"/>
+
+
+        <TextView
+            android:id="@+id/scopeTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:text="This is a scope"
+            android:textColor="@color/light"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/scopeTitleTV"
+            app:layout_constraintTop_toTopOf="@+id/CL"
+            android:layout_marginStart="40sp"
+            android:layout_marginTop="40sp"/>
+
+        <TextView
+            android:id="@+id/courseTitleTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Course: "
+            android:textColor="@color/light"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/scopeTitleTV"
+            android:layout_marginStart="40sp"
+            android:layout_marginTop="40sp"/>
+
+        <TextView
+            android:id="@+id/courseTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:text="This is a course"
+            android:textColor="@color/light"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/courseTitleTV"
+            app:layout_constraintTop_toBottomOf="@+id/scopeTitleTV"
+            android:layout_marginStart="40sp"
+            android:layout_marginTop="40sp"/>
+
+
+
+        <TextView
+            android:id="@+id/subjectTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Subject: "
+            android:textColor="@color/light"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/courseTV"
+            android:layout_marginStart="40sp"
+            android:layout_marginTop="43sp"/>
+
+        <TextView
+            android:id="@+id/subjectTVValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            app:layout_constraintStart_toEndOf="@id/subjectTV"
+            app:layout_constraintTop_toBottomOf="@+id/courseTV"
+            android:text="This is a subject"
+            android:textColor="@color/light"
+            android:textSize="20sp"
+            android:layout_marginStart="40sp"
+            android:layout_marginTop="40sp"
+            />
+
+        <TextView
+            android:id="@+id/bodyTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Body: "
+            android:textColor="@color/light"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/subjectTVValue"
+            android:layout_marginStart="40sp"
+            android:layout_marginEnd="40sp"
+            android:layout_marginTop="40sp"/>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

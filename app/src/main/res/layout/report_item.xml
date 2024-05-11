@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dateTextView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fontFamily="@font/roboto_bold"
+    android:background="@drawable/filledroundbox_nopad"
+    android:textColor="@color/white"
+    android:textAlignment="center"
+    android:textSize="20sp"
+    android:padding="15dp"
+    android:layout_marginRight="20sp"
+    android:layout_marginLeft="20sp"
+    android:layout_marginBottom="10sp"
+    android:clickable="true"
+    android:focusable="true"/>

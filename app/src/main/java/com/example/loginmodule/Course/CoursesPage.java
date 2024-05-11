@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -21,6 +23,8 @@ public class CoursesPage extends CourseFetcher {
     private Button AddCourseButtonBTN;
     private RadioGroup radioFilterGroup;
     private CourseAdapter courseAdapter;
+    private ProgressBar progressBar;
+    private ConstraintLayout dataLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +35,11 @@ public class CoursesPage extends CourseFetcher {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        dataLayout = findViewById(R.id.CL);
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
+        dataLayout.setVisibility(View.GONE);
 
         courseRV = findViewById(R.id.coursesRV);
         AddCourseButtonBTN = findViewById(R.id.AddCourseButton);
@@ -70,6 +79,9 @@ public class CoursesPage extends CourseFetcher {
         courseRV.setAdapter(courseAdapter);
         courseRV.setEnabled(true);
         courseRV.setVisibility(View.VISIBLE);
+
+        progressBar.setVisibility(View.GONE);
+        dataLayout.setVisibility(View.VISIBLE);
     }
     @Override
     protected void handlefetchCoursesINS() {setupRecyclerView();}

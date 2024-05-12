@@ -51,8 +51,6 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
             holder.courseAttendenceIV.setBackgroundColor(context.getResources().getColor(R.color.attending));
         } else if (course.getCurrentTimeInfo().equals("Complete")) {
             holder.courseAttendenceIV.setBackgroundColor(context.getResources().getColor(R.color.complete));
-        } else {
-            holder.courseAttendenceIV.setBackgroundColor(context.getResources().getColor(R.color.not_started));
         }
 
         if (accountType.equals("Instructor")) {

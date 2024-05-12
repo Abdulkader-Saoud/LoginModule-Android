@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.loginmodule.HomePage;
 import com.example.loginmodule.R;
 
 public class CoursesPage extends CourseFetcher {
@@ -68,9 +69,20 @@ public class CoursesPage extends CourseFetcher {
     }
     private void setupRecyclerView() {
         if (coursesArray.isEmpty()) {
-            Toast.makeText(this, "No courses found", Toast.LENGTH_SHORT).show();
-            return;
+            if (accountType.equals("Student")){
+                Toast.makeText(this, "No courses found", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, HomePage.class);
+                startActivity(intent);
+                return;
+            }
+            else {
+                Toast.makeText(this, "No courses found Create One.", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, CourseCreatePage.class);
+                startActivity(intent);
+                return;
+            }
         }
+
         courseAdapter = new CourseAdapter(this, coursesArray);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);

@@ -57,6 +57,8 @@ public class CourseCreatePage extends AppCompatActivity implements DatePickerFra
         docID = thisintent.getStringExtra("docID");
         mAuth = FirebaseAuth.getInstance();
         setupUI();
+
+        deleteBTN.setOnClickListener(v -> handleDeleteCourse());
         if (docID == null) {
             instructors = new ArrayList<>();
         }
@@ -78,7 +80,6 @@ public class CourseCreatePage extends AppCompatActivity implements DatePickerFra
             datePickerFragment.setDateSetListener(this);
             datePickerFragment.show(getSupportFragmentManager(), "date picker");
         });
-
 
     }
 
@@ -163,6 +164,31 @@ public class CourseCreatePage extends AppCompatActivity implements DatePickerFra
         saveBTN.setOnClickListener(v -> saveCourse());
         addgroupBTN.setOnClickListener(v -> handleAddGroup());
 
+    }
+    private void handleDeleteCourse() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        for (String instructor : instructors) {
+            db.collection("CourseGroups").document(docID + instructor)
+                    .delete()
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d("CC DeleteCourse", "Group deleted");
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.d("CC DeleteCourse", "Error deleting group");
+                    });
+        }
+        db.collection("Courses").document(docID)
+                .delete()
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("CC DeleteCourse", "Course deleted");
+                    Toast.makeText(this, "Course deleted", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(this, HomePage.class);
+                    startActivity(intent);
+                })
+                .addOnFailureListener(e -> {
+                    Log.d("CC DeleteCourse", "Error deleting course");
+                    Toast.makeText(this, "Error deleting course", Toast.LENGTH_SHORT).show();
+                });
     }
     private void handleAddGroup() {
         String instructorID = instructorET.getText().toString();

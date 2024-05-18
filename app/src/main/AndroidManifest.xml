@@ -19,6 +19,9 @@
         android:theme="@style/Theme.LoginModule"
         tools:targetApi="31">
         <activity
+            android:name=".Post.PostPage"
+            android:exported="false" />
+        <activity
             android:name=".Report.ReportPage"
             android:exported="false" />
         <activity

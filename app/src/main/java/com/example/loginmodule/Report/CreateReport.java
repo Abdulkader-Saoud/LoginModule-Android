@@ -55,8 +55,8 @@ public class CreateReport extends CourseFetcher {
         dataLayout.setVisibility(View.GONE);
 
         subjectET = findViewById(R.id.subjectET);
-        bodyET = findViewById(R.id.bodyET);
-        submitButton = findViewById(R.id.submitButton);
+        bodyET = findViewById(R.id.replyET);
+        submitButton = findViewById(R.id.postReplyButton);
         Intent intent = getIntent();
         courseName = intent.getStringExtra("courseName");
 

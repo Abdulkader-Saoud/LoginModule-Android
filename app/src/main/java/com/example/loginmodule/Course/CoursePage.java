@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,12 +20,20 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.loginmodule.Post.Post;
+import com.example.loginmodule.Post.PostAdapter;
 import com.example.loginmodule.R;
 import com.example.loginmodule.Report.CreateReport;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,9 +44,15 @@ public class CoursePage extends AppCompatActivity {
     private Course course;
     private String instructorID,instructorEmail;
     private String uid, accountType;
-    private CardView postCard;
+    private RecyclerView postRV;
     private ProgressBar progressBar;
     private ConstraintLayout dataLayout;
+    private ArrayList<Post> posts = new ArrayList<>();
+    private PostAdapter postAdapter;
+
+    private Button addPostBTN;
+    private EditText postTitleET;
+    private ArrayList<DocumentReference> postRefs = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +78,11 @@ public class CoursePage extends AppCompatActivity {
         courseSTDCountTV = findViewById(R.id.courseSTDCountTV);
         courseINSTV = findViewById(R.id.courseINSTV);
         sendMailBTN = findViewById(R.id.sendMailBTN);
+        postRV = findViewById(R.id.postsRV);
+        addPostBTN = findViewById(R.id.addPostBTN);
+        postTitleET = findViewById(R.id.postTitleET);
+
+        addPostBTN.setOnClickListener(v -> handleAddPost());
 
         course = (Course) getIntent().getSerializableExtra("course");
 
@@ -70,14 +91,15 @@ public class CoursePage extends AppCompatActivity {
         if (accountType.equals("Instructor")) {
             sendMailBTN.setVisibility(View.GONE);
         }
-        else {
-            postCard = findViewById(R.id.postCard);
-            postCard.setOnClickListener(v -> {
-                Intent intent = new Intent(this, CreateReport.class);
-                intent.putExtra("courseName", course.getCourseName());
-                startActivity(intent);
-            });
-        }
+//        else {
+//            postCard = findViewById(R.id.postCard);
+//            postCard.setOnClickListener(v -> {
+//                Intent intent = new Intent(this, CreateReport.class);
+//                intent.putExtra("courseName", course.getCourseName());
+//                startActivity(intent);
+//            });
+//        }
+
         getINSID();
     }
     private void getINSID() {
@@ -92,7 +114,7 @@ public class CoursePage extends AppCompatActivity {
                         if (document.getId().contains(course.getCourseCode())) {
                             instructorID = document.get("instructorID").toString();
                             courseSTDCountTV.setText(document.get("count").toString());
-                            getInstructorData(instructorID);
+                            getPosts();
                             break;
                         }
                     }
@@ -102,18 +124,39 @@ public class CoursePage extends AppCompatActivity {
                 }
             });
         }
+        // Dont need this
         else if (accountType.equals("Instructor")) {
             db.collection("CourseGroups").document(course.getCourseCode() + uid).get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     instructorID = document.get("instructorID").toString();
                     courseSTDCountTV.setText(document.get("count").toString());
-                    getInstructorData(instructorID);
+                    getPosts();
                 } else {
                     System.out.println("Error getting documents: " + task.getException());
                 }
             });
         }
+    }
+    private void getPosts(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("CourseGroups").document(course.getCourseCode() + instructorID).collection("Posts").orderBy("date") .get().addOnCompleteListener(task1 -> {
+            if (task1.isSuccessful()) {
+                List<DocumentSnapshot> postDocuments = task1.getResult().getDocuments();
+                for (DocumentSnapshot postDocument : postDocuments) {
+                    Post post = new Post(postDocument.getId(), postDocument.get("title").toString(), postDocument.getDate("date"), Integer.parseInt(postDocument.get("commentsCount").toString()), postDocument.getReference().getPath());
+                    posts.add(post);
+                }
+                postAdapter = new PostAdapter(posts);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                postRV.setLayoutManager(linearLayoutManager);
+                postRV.setAdapter(postAdapter);
+
+                getInstructorData(instructorID);
+            } else {
+                System.out.println("Error getting documents: " + task1.getException());
+            }
+        });
     }
     private void getInstructorData(String instructorID){
         FirebaseFirestore  db = FirebaseFirestore.getInstance();
@@ -146,5 +189,30 @@ public class CoursePage extends AppCompatActivity {
         } else {
             Toast.makeText(this, "No email app found", Toast.LENGTH_SHORT).show();
         }
+    }
+    private void handleAddPost(){
+        String postTitle = postTitleET.getText().toString();
+        if (postTitle.isEmpty()) {
+            postTitleET.setError("Title is required");
+            postTitleET.requestFocus();
+            return;
+        }
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> data = new HashMap<>();
+        data.put("title", postTitle);
+        data.put("date", new Date());
+        data.put("commentsCount", 0);
+        progressBar.setVisibility(View.VISIBLE);
+        dataLayout.setVisibility(View.GONE);
+        db.collection("CourseGroups").document(course.getCourseCode() + instructorID).collection("Posts").document().set(data).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(this, "Post added successfully", Toast.LENGTH_SHORT).show();
+                postTitleET.setText("");
+                posts.clear();
+                getPosts();
+            } else {
+                Toast.makeText(this, "Failed to add post", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

@@ -32,7 +32,6 @@ public class Course implements Serializable {
         if (endDate.before(currentDate)){
             this.timeInfo = "Complete";
         }
-
     }
 
     public String getStartandEndDate() {

@@ -22,11 +22,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.bumptech.glide.Glide;
 import com.example.loginmodule.HomePage;
 import com.example.loginmodule.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,10 +43,12 @@ public class ProfilePage extends AppCompatActivity {
     private Map<String, Object> profileData = new HashMap<>();
     private ProgressBar progressBar;
     private ConstraintLayout dataLayout;
-    private SharedPreferences sharedPreferences;
     private Spinner spinneredu;
     private Button saveBtn, forwardBtn, passButton, logoutButton;
     private CheckBox checkboxSocials,checkboxContact;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+    private String uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +81,10 @@ public class ProfilePage extends AppCompatActivity {
         passButton = findViewById(R.id.passButton);
         logoutButton = findViewById(R.id.logoutButton);
 
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+        SharedPreferences sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
+        uid = sharedPreferences.getString(getString(R.string.prefKey_stdID), null);
 
         profilePic.setOnClickListener(v -> openCamera());
         saveBtn.setOnClickListener(v -> saveToFirebase());
@@ -229,16 +238,17 @@ public class ProfilePage extends AppCompatActivity {
             Log.e("ProfilePage", "assignFields: profileData is empty");
         }
 
-        sharedPreferences = getSharedPreferences(getString(R.string.prefName_login), MODE_PRIVATE);
-        String imagePath = sharedPreferences.getString(getString(R.string.prefKey_imagePath), null);
-        Log.d("ProfilePage", "assignFields: " + imagePath);
-        if (imagePath != null) {
-            profilePic.setImageURI(Uri.parse(imagePath));
-        }
-
-
-        progressBar.setVisibility(ProgressBar.INVISIBLE);
-        dataLayout.setVisibility(ConstraintLayout.VISIBLE);
+        StorageReference ref = storageReference.child("Profile_Pictures/"  + uid);
+        ref.getDownloadUrl().addOnSuccessListener(uri -> {
+            Log.d("ProfilePage", "assignFields: " + uri);
+            Glide.with(this).load(uri).into(profilePic);
+            progressBar.setVisibility(ProgressBar.INVISIBLE);
+            dataLayout.setVisibility(ConstraintLayout.VISIBLE);
+        }).addOnFailureListener(e -> {
+            Log.e("ProfilePage", "assignFields: " + e.getMessage());
+            progressBar.setVisibility(ProgressBar.INVISIBLE);
+            dataLayout.setVisibility(ConstraintLayout.VISIBLE);
+        });
     }
     private void fetchProfileData() {
         progressBar.setVisibility(ProgressBar.VISIBLE);

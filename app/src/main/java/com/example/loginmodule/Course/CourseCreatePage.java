@@ -225,6 +225,7 @@ public class CourseCreatePage extends AppCompatActivity implements DatePickerFra
                                                 .addOnSuccessListener(aVoid1 -> {
                                                     Log.d("CC AddGroup", "Instructor added to course");
                                                     Toast.makeText(this, "Instructor added to course", Toast.LENGTH_SHORT).show();
+                                                    makeGeneralPost(docID + instructorID);
                                                 })
                                                 .addOnFailureListener(e -> Log.d("CC AddGroup", "Error adding instructor to course"));
                                     })
@@ -242,7 +243,22 @@ public class CourseCreatePage extends AppCompatActivity implements DatePickerFra
                     Toast.makeText(this, "Error checking instructor", Toast.LENGTH_SHORT).show();
                 });
     }
-
+    private void makeGeneralPost(String id) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> data = new HashMap<>();
+        data.put("title", "General Post");
+        data.put("content", "This is a general post");
+        data.put("date", new Date());
+        data.put("commentsCount", 0);
+        db.collection("CourseGroups").document(id).collection("Posts")
+                .add(data)
+                .addOnSuccessListener(documentReference -> {
+                    Log.d("CC MakeGeneralPost", "General post added");
+                })
+                .addOnFailureListener(e -> {
+                    Log.d("CC MakeGeneralPost", "Error adding general post");
+                });
+    }
     private void fetchUI(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Courses").document(docID)

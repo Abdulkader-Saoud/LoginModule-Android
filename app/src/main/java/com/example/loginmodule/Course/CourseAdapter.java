@@ -20,13 +20,12 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
 
     private final Context context;
     private final ArrayList<Course> courseModelArrayList;
-    private String uid, accountType;
+    private String accountType;
 
     public CourseAdapter(Context context, ArrayList<Course> courseModelArrayList) {
         this.context = context;
         this.courseModelArrayList = courseModelArrayList;
         courseModelArrayList.sort((o1, o2) -> o1.getStartDate().before(o2.getStartDate()) ? -1 : 1);
-        uid = context.getSharedPreferences("login", Context.MODE_PRIVATE).getString(context.getString(R.string.prefKey_stdID), null);
         accountType = context.getSharedPreferences("login", Context.MODE_PRIVATE).getString(context.getString(R.string.prefKey_accType), null);
     }
 

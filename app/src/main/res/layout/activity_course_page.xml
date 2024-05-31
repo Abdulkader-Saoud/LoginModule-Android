@@ -122,6 +122,7 @@
                 android:layout_marginTop="43sp"
                 />
 
+
             <EditText
                 android:id="@+id/postTitleET"
                 android:layout_width="0dp"
@@ -141,11 +142,37 @@
                 android:layout_marginStart="30sp"
                 android:layout_marginEnd="30sp"
                 android:layout_marginTop="45sp"/>
+
+            <RadioGroup
+                android:id="@+id/radioFilterGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/addPostBTN"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:paddingStart="15dp"
+                android:paddingTop="15dp"
+                >
+                <RadioButton android:id="@+id/radio_none"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:paddingRight="10dp"
+                    android:text="All"/>
+                <RadioButton android:id="@+id/radio_sub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:paddingRight="10dp"
+                    android:text="Sub"/>
+            </RadioGroup>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/postsRV"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintTop_toBottomOf="@+id/postTitleET"
+                app:layout_constraintTop_toBottomOf="@+id/radioFilterGroup"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginStart="15dp"

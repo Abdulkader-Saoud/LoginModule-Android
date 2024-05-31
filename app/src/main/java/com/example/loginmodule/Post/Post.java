@@ -11,6 +11,7 @@ public class Post implements Serializable {
     private Date date;
     private int commentsCount= 0;
     private String path;
+    private Boolean isSub = false;
 
     public Post(String id, String title, Date date , int commentsCount, String path) {
         this.id = id;
@@ -30,6 +31,12 @@ public class Post implements Serializable {
 
     public Date getDate() {
         return date;
+    }
+    public void setIsSub(Boolean isSub){
+        this.isSub = isSub;
+    }
+    public Boolean getIsSub(){
+        return isSub;
     }
 
     public int getCommentsCount() {

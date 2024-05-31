@@ -1,40 +1,61 @@
 package com.example.loginmodule.Post;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.loginmodule.R;
-import com.google.firebase.firestore.DocumentReference;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
+import java.util.Locale;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private final ArrayList<Post> postModelArrayList;
 
-    public PostAdapter(ArrayList<Post> postModelArrayList) {
-        this.postModelArrayList = postModelArrayList;
+    public PostAdapter(ArrayList<Post> postList, Boolean onlySub) {
+        if (onlySub) {
+            postModelArrayList = new ArrayList<>();
+            for (Post post : postList) {
+                if (post.getIsSub()) {
+                    postModelArrayList.add(post);
+                }
+            }
+        } else {
+            postModelArrayList = postList;
+        }
     }
 
     @NonNull
     @Override
     public PostAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = View.inflate(parent.getContext(), R.layout.post_card, null);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_card, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PostAdapter.ViewHolder holder, int position) {
+        Context context = holder.itemView.getContext();
         Post post = postModelArrayList.get(position);
+
         holder.postName.setText(post.getTitle());
-        holder.postDate.setText(post.getDate().getDay() + "-" + post.getDate().getMonth() + "-" + (post.getDate().getYear() + 1900));
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        String formattedDate = dateFormat.format(post.getDate());
+        holder.postDate.setText(formattedDate);
+
+        if (post.getIsSub()) {
+            holder.newMessagesImage.setBackgroundColor(ContextCompat.getColor(context, R.color.attending));
+        }
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), PostPage.class);
@@ -42,14 +63,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             v.getContext().startActivity(intent);
         });
     }
+
     @Override
     public int getItemCount() {
         return postModelArrayList.size();
     }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private ImageView newMessagesImage;
-        private TextView postName;
-        private TextView postDate;
+        private final ImageView newMessagesImage;
+        private final TextView postName;
+        private final TextView postDate;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -57,6 +80,5 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             postName = itemView.findViewById(R.id.postName);
             postDate = itemView.findViewById(R.id.postDate);
         }
-
     }
 }

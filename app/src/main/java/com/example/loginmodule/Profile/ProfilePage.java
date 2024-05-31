@@ -239,6 +239,7 @@ public class ProfilePage extends AppCompatActivity {
         }
 
         StorageReference ref = storageReference.child("Profile_Pictures/"  + uid);
+
         ref.getDownloadUrl().addOnSuccessListener(uri -> {
             Log.d("ProfilePage", "assignFields: " + uri);
             Glide.with(this).load(uri).into(profilePic);
@@ -253,10 +254,10 @@ public class ProfilePage extends AppCompatActivity {
     private void fetchProfileData() {
         progressBar.setVisibility(ProgressBar.VISIBLE);
         dataLayout.setVisibility(ConstraintLayout.INVISIBLE);
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
+
+        if (uid != null) {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-            db.collection("Users").document(user.getUid()).get().addOnCompleteListener(task -> {
+            db.collection("Users").document(uid).get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     profileData = task.getResult().getData();
                     Log.d("ProfilePage", "fetchProfileData: " + profileData);

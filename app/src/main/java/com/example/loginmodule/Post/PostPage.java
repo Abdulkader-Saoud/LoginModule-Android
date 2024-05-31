@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.loginmodule.R;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -35,8 +37,9 @@ public class PostPage extends AppCompatActivity {
     private ImageButton addReplyButton;
     private LinearLayout replyLayout;
     private EditText replyET;
-    private Button postReplyButton;
+    private Button postReplyButton,subBTN;
     private String uid,fname;
+    private TextView postTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,19 +51,50 @@ public class PostPage extends AppCompatActivity {
             return insets;
         });
         SharedPreferences sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
-        uid = sharedPreferences.getString(String.valueOf(R.string.prefKey_stdID), "");
-        fname = sharedPreferences.getString(String.valueOf(R.string.prefKey_fName), "");
+        uid = sharedPreferences.getString(getString(R.string.prefKey_stdID), "");
+        fname = sharedPreferences.getString(getString(R.string.prefKey_fName), "");
 
         post = (Post) getIntent().getSerializableExtra("post");
         addReplyButton = findViewById(R.id.addReplyButton);
         addReplyButton.setOnClickListener(v -> showAddReply());
 
+        subBTN = findViewById(R.id.subBTN);
+        if (post.getIsSub()){
+            subBTN.setText("UnSubscribe");
+        }
+        subBTN.setOnClickListener(e -> toggleSub());
+
+        postTitle = findViewById(R.id.postTitle);
+        postTitle.setText(post.getTitle());
         replyLayout = findViewById(R.id.replyLayout);
         replyET = findViewById(R.id.replyET);
         postReplyButton = findViewById(R.id.postReplyButton);
         postReplyButton.setOnClickListener(v -> postReply());
         commentsRV = findViewById(R.id.commentsRV);
         fetchComments();
+    }
+    private void toggleSub() {
+        String postPath = post.getPath();
+        DocumentReference postRef = FirebaseFirestore.getInstance().document(postPath);
+
+        Map<String, Object> updates = new HashMap<>();
+        if (!post.getIsSub())
+            updates.put("subs", FieldValue.arrayUnion(uid));
+        else
+            updates.put("subs", FieldValue.arrayRemove(uid));
+
+        postRef.update(updates)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("TAG", "String appended to array successfully.");
+                    post.setIsSub(!post.getIsSub());
+                    if (post.getIsSub())
+                        subBTN.setText("UnSubscribe");
+                    else
+                        subBTN.setText("Subscribe");
+                })
+                .addOnFailureListener(e -> {
+                    Log.w("TAG", "Error appending string to array", e);
+                });
     }
     private void showAddReply(){
         if (replyLayout.getVisibility() == View.GONE) {
@@ -79,6 +113,7 @@ public class PostPage extends AppCompatActivity {
         data.put("userID", uid);
         data.put("username", fname);
         data.put("commentContent", reply);
+        Log.d("PostPage", "Post Path: " + uid + fname);
         DocumentReference postRef = FirebaseFirestore.getInstance().document(postPath);
         postRef.collection("comments").add(data).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -106,7 +141,7 @@ public class PostPage extends AppCompatActivity {
                     Toast.makeText(this, "No comments", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                commentsRV.setLayoutManager(new LinearLayoutManager(this));
+                commentsRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
                 commentAdapter = new CommentAdapter(comments);
                 commentsRV.setAdapter(commentAdapter);
                 commentsRV.setVisibility(View.VISIBLE);

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    >
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profileImage"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:padding="10dp"
+        app:circularflow_radiusInDP="50"
+        android:src="@color/blue"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Username"
+        android:textSize="20sp"
+        android:fontFamily="@font/roboto_bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/profileImage"
+        android:textColor="@color/blue"
+        />
+
+    <TextView
+        android:id="@+id/commentContent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Post Content asdasd asd asd asd as das a sd as das das  asd as d sa as dsa d as d"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toEndOf="@id/profileImage"
+        app:layout_constraintTop_toBottomOf="@id/username"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <ImageButton
+        android:id="@+id/addReplyButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:backgroundTint="#00FFFFFF"
+        android:src="@drawable/respond_icon"
+        app:layout_constraintEnd_toStartOf="@+id/showButton"
+        app:layout_constraintTop_toBottomOf="@+id/commentContent"
+        android:paddingTop="0dp"
+        android:layout_marginRight="20dp"
+        android:contentDescription="send mail" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/showButton"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/filledroundbox"
+        android:backgroundTint="@color/grey"
+        android:layout_marginEnd="10sp"
+        app:layout_constraintTop_toBottomOf="@id/commentContent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <LinearLayout
+        android:id="@+id/replyLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/addReplyButton"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/replyET"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@drawable/roundbox"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="top"
+            android:hint="comment ..."
+            android:inputType="textMultiLine"
+            android:minHeight="48dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/grey"
+            android:layout_marginStart="20sp"
+            android:layout_marginEnd="20sp"
+            android:layout_marginTop="15sp"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/postReplyButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/filledroundbox"
+            android:backgroundTint="@color/blue"
+            android:text="Reply"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:layout_constraintTop_toBottomOf="@+id/replyET"
+            android:layout_marginStart="60sp"
+            android:layout_marginEnd="60sp"
+            android:layout_marginTop="20sp"
+            />
+
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:visibility="gone"
+        android:id="@+id/commentsRV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/replyLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/blue"
+        app:layout_constraintTop_toBottomOf="@+id/commentsRV"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

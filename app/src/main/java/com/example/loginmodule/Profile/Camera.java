@@ -27,18 +27,27 @@ import android.widget.Toast;
 
 import com.example.loginmodule.Profile.ProfilePage;
 import com.example.loginmodule.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicMarkableReference;
 
 public class Camera extends AppCompatActivity {
 
     public static final int CAMERA_PERM_CODE = 101;
     public static final int CAMERA_REQUEST_CODE = 102;
-    ImageView selectedImage;
-    Button cameraBtn;
-    String currentPhotoPath;
+    private ImageView selectedImage;
+    private Button cameraBtn;
+    private String currentPhotoPath;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+    private String uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,20 +60,33 @@ public class Camera extends AppCompatActivity {
         Button galleryBtn = findViewById(R.id.buttonGallery);
         Button saveBtn = findViewById(R.id.buttonSave);
 
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+        SharedPreferences sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
+        uid = sharedPreferences.getString(getString(R.string.prefKey_stdID), null);
+
         cameraBtn.setOnClickListener(v -> verifyPermissions(0));
         galleryBtn.setOnClickListener(v -> verifyPermissions(1));
-        saveBtn.setOnClickListener(this::saveImagePathToPref);
+        saveBtn.setOnClickListener(v -> uploadImageToFirebase());
     }
 
-    public void saveImagePathToPref(View view){
-        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.prefName_login), MODE_PRIVATE);
-        SharedPreferences.Editor myEdit = sharedPreferences.edit();
-        myEdit.putString(getString(R.string.prefKey_imagePath), currentPhotoPath);
-        myEdit.apply();
-        Toast.makeText(this, "Image Path Saved", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, ProfilePage.class);
-        startActivity(intent);
+    private void uploadImageToFirebase(){
+        StorageReference ref = storageReference.child("Profile_Pictures/"
+                                + uid);
+        ref.putFile(Uri.parse(currentPhotoPath))
+                .addOnSuccessListener(taskSnapshot -> {
+                            Toast toast = Toast.makeText(getApplicationContext(), "Image Uploaded", Toast.LENGTH_SHORT);
+                            toast.show();
+                            Intent intent = new Intent(this, ProfilePage.class);
+                            startActivity(intent);
+                        })
+
+                .addOnFailureListener(e -> {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT);
+                    toast.show();
+                });
     }
+
     private void verifyPermissions(Integer i){
         String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -108,8 +130,8 @@ public class Camera extends AppCompatActivity {
         if(requestCode == CAMERA_REQUEST_CODE){
             if(resultCode == Activity.RESULT_OK){
                 File f = new File(currentPhotoPath);
-                selectedImage.setImageURI(Uri.fromFile(f));
-                Log.d("tag", "ABsolute Url of Image is " + Uri.fromFile(f));
+                currentPhotoPath = Uri.fromFile(f).toString();
+                selectedImage.setImageURI(Uri.parse(currentPhotoPath));
             }
 
         }
@@ -124,9 +146,7 @@ public class Camera extends AppCompatActivity {
                 ".jpg",
                 storageDir
         );
-        Log.d("tag", "Image Path is: " + image.getAbsolutePath());
         currentPhotoPath = image.getAbsolutePath();
-        Log.d("tag", "Current Photo Path is: " + currentPhotoPath);
         return image;
     }
 

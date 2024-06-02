@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -20,10 +21,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.loginmodule.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,12 +80,11 @@ public class PostPage extends AppCompatActivity {
     private void toggleSub() {
         String postPath = post.getPath();
         DocumentReference postRef = FirebaseFirestore.getInstance().document(postPath);
-
         Map<String, Object> updates = new HashMap<>();
         if (!post.getIsSub())
-            updates.put("subs", FieldValue.arrayUnion(uid));
+            updates.put("subs", FieldValue.arrayUnion(FSM.getFsmToken()));
         else
-            updates.put("subs", FieldValue.arrayRemove(uid));
+            updates.put("subs", FieldValue.arrayRemove(FSM.getFsmToken()));
 
         postRef.update(updates)
                 .addOnSuccessListener(aVoid -> {
@@ -95,6 +98,7 @@ public class PostPage extends AppCompatActivity {
                 .addOnFailureListener(e -> {
                     Log.w("TAG", "Error appending string to array", e);
                 });
+
     }
     private void showAddReply(){
         if (replyLayout.getVisibility() == View.GONE) {
@@ -120,6 +124,7 @@ public class PostPage extends AppCompatActivity {
                 fetchComments();
                 replyET.setText("");
                 replyLayout.setVisibility(View.GONE);
+                post.notifySubs();
             }
         });
 

@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.loginmodule.HomePage;
+import com.example.loginmodule.Post.FSM;
 import com.example.loginmodule.Post.Post;
 import com.example.loginmodule.Post.PostAdapter;
 import com.example.loginmodule.R;
@@ -168,7 +169,7 @@ public class CoursePage extends AppCompatActivity {
                     if (subs != null){
                         int j = 0;
                         while (j < subs.size()){
-                            if (subs.get(j).equals(uid)){
+                            if (subs.get(j).equals(FSM.getFsmToken())){
                                 post.setIsSub(true);
                                 break;
                             }

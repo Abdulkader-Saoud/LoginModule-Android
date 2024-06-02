@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.loginmodule.Course.CoursesPage;
+import com.example.loginmodule.Post.FSM;
 import com.example.loginmodule.Profile.ProfilePage;
 import com.example.loginmodule.Report.CreateReport;
 import com.example.loginmodule.Report.ReportsPage;
@@ -29,6 +30,10 @@ public class HomePage extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        if (FSM.getFsmToken() == null)
+            new FSM();
+
+
         Context context = getApplicationContext();
         accountType = context.getSharedPreferences("login", Context.MODE_PRIVATE).getString(context.getString(R.string.prefKey_accType), null);
 

@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "445594787168",
-    "project_id": "myapp-bf0f0",
-    "storage_bucket": "myapp-bf0f0.appspot.com"
+    "project_number": "884735204633",
+    "project_id": "courseapp-2c33a",
+    "storage_bucket": "courseapp-2c33a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:445594787168:android:cb10bc054022dff3105205",
+        "mobilesdk_app_id": "1:884735204633:android:bb90f9e1e4dc24d1b2f988",
         "android_client_info": {
           "package_name": "com.example.loginmodule"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBqPV_3ioKnMkwcQbWgCvRUqAUwsOzeDvI"
+          "current_key": "AIzaSyAsPb6INF59C9QlBrYqkNPpgBbI3YP_yUQ"
         }
       ],
       "services": {

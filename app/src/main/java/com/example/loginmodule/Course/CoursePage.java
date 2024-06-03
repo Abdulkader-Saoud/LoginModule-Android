@@ -6,8 +6,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,15 +21,28 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.loginmodule.HomePage;
+import com.example.loginmodule.Post.FSM;
+import com.example.loginmodule.Post.Post;
+import com.example.loginmodule.Post.PostAdapter;
 
 import com.example.loginmodule.PollQuesModule.PollsListActivity;
 import com.example.loginmodule.R;
 import com.example.loginmodule.Report.CreateReport;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class CoursePage extends AppCompatActivity {
 
@@ -35,9 +51,17 @@ public class CoursePage extends AppCompatActivity {
     private Course course;
     private String instructorID,instructorEmail;
     private String uid, accountType;
-    private CardView postCard, pollsLstBtn;
+    private RecyclerView postRV;
+    private CardView pollsLstBtn;
     private ProgressBar progressBar;
-    private ConstraintLayout dataLayout;
+    private ConstraintLayout dataLayout,insPart,stdPart;
+    private ArrayList<Post> posts = new ArrayList<>();
+    private PostAdapter postAdapter;
+    private Button addPostBTN;
+    private EditText postTitleET;
+    private RadioGroup radioFilterGroup;
+    private Boolean onlySub = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +81,22 @@ public class CoursePage extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
         dataLayout.setVisibility(View.GONE);
+        insPart = findViewById(R.id.insPart);
+        stdPart = findViewById(R.id.stdPart);
+
+        radioFilterGroup = findViewById(R.id.radioFilterGroup);
+        radioFilterGroup.check(R.id.radio_none);
+        radioFilterGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                Log.d("CoursePage", "id " + checkedId);
+                if (R.id.radio_none == checkedId )
+                    onlySub = false;
+                else
+                    onlySub = true;
+                getINSID();
+            }
+        });
 
         courseNameTV = findViewById(R.id.courseNameTV);
         courseCodeTV = findViewById(R.id.courseCodeTV);
@@ -64,6 +104,12 @@ public class CoursePage extends AppCompatActivity {
         courseINSTV = findViewById(R.id.courseINSTV);
         sendMailBTN = findViewById(R.id.sendMailBTN);
         pollsLstBtn = findViewById(R.id.pollListBtnId);
+        postRV = findViewById(R.id.postsRV);
+        addPostBTN = findViewById(R.id.addPostBTN);
+        postTitleET = findViewById(R.id.postTitleET);
+
+        addPostBTN.setOnClickListener(v -> handleAddPost());
+
 
         course = (Course) getIntent().getSerializableExtra("course");
 
@@ -73,14 +119,8 @@ public class CoursePage extends AppCompatActivity {
         courseCodeTV.setText(course.getCourseCode());
         if (accountType.equals("Instructor")) {
             sendMailBTN.setVisibility(View.GONE);
-        }
-        else {
-            postCard = findViewById(R.id.postCard);
-            postCard.setOnClickListener(v -> {
-                Intent intent = new Intent(this, CreateReport.class);
-                intent.putExtra("courseName", course.getCourseName());
-                startActivity(intent);
-            });
+            insPart.setVisibility(View.VISIBLE);
+            stdPart.setVisibility(View.GONE);
         }
         getINSID();
     }
@@ -103,7 +143,9 @@ public class CoursePage extends AppCompatActivity {
                         if (document.getId().contains(course.getCourseCode())) {
                             instructorID = document.get("instructorID").toString();
                             courseSTDCountTV.setText(document.get("count").toString());
-                            getInstructorData(instructorID);
+                            Log.d("CoursePage","ins ID" + instructorID);
+                            getPosts();
+                            Log.d("CoursePage","getting posts");
                             break;
                         }
                     }
@@ -119,12 +161,49 @@ public class CoursePage extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     instructorID = document.get("instructorID").toString();
                     courseSTDCountTV.setText(document.get("count").toString());
-                    getInstructorData(instructorID);
+                    progressBar.setVisibility(View.GONE);
+                    dataLayout.setVisibility(View.VISIBLE);
                 } else {
                     System.out.println("Error getting documents: " + task.getException());
                 }
             });
         }
+    }
+    private void getPosts(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        posts = new ArrayList<>();
+        db.collection("CourseGroups").document(course.getCourseCode() + instructorID).collection("Posts").orderBy("date") .get().addOnCompleteListener(task1 -> {
+            if (task1.isSuccessful()) {
+                List<DocumentSnapshot> postDocuments = task1.getResult().getDocuments();
+                Log.d("CoursePage","posts count " + postDocuments.size());
+                for (DocumentSnapshot postDocument : postDocuments) {
+                    Post post = new Post(postDocument.getId(), postDocument.get("title").toString(), postDocument.getDate("date"), Integer.parseInt(postDocument.get("commentsCount").toString()), postDocument.getReference().getPath());
+                    ArrayList<String> subs = (ArrayList<String>) postDocument.get("subs");
+                    if (subs != null){
+                        int j = 0;
+                        while (j < subs.size()){
+                            if (subs.get(j).equals(FSM.getFsmToken())){
+                                post.setIsSub(true);
+                                break;
+                            }
+                            j += 1;
+                        }
+                    }
+                    posts.add(post);
+                }
+                if (!posts.isEmpty()){
+                    postAdapter = new PostAdapter(posts,onlySub);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                    postRV.setLayoutManager(linearLayoutManager);
+                    postRV.setAdapter(postAdapter);
+                }
+                getInstructorData(instructorID);
+            } else {
+                Intent intent = new Intent(CoursePage.this,HomePage.class);
+                startActivity(intent);
+                Log.e("CoursePage","Cant fetch posts.");
+            }
+        });
     }
     private void getInstructorData(String instructorID){
         FirebaseFirestore  db = FirebaseFirestore.getInstance();
@@ -157,5 +236,30 @@ public class CoursePage extends AppCompatActivity {
         } else {
             Toast.makeText(this, "No email app found", Toast.LENGTH_SHORT).show();
         }
+    }
+    private void handleAddPost(){
+        String postTitle = postTitleET.getText().toString();
+        if (postTitle.isEmpty()) {
+            postTitleET.setError("Title is required");
+            postTitleET.requestFocus();
+            return;
+        }
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> data = new HashMap<>();
+        data.put("title", postTitle);
+        data.put("date", new Date());
+        data.put("commentsCount", 0);
+        progressBar.setVisibility(View.VISIBLE);
+        dataLayout.setVisibility(View.GONE);
+        db.collection("CourseGroups").document(course.getCourseCode() + instructorID).collection("Posts").document().set(data).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(this, "Post added successfully", Toast.LENGTH_SHORT).show();
+                postTitleET.setText("");
+                posts.clear();
+                getPosts();
+            } else {
+                Toast.makeText(this, "Failed to add post", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

@@ -187,7 +187,7 @@ public class ProfilePage extends AppCompatActivity {
             data.put("twitter", etTwitter.getText().toString());
             data.put("socials", checkboxSocials.isChecked());
             data.put("contact", checkboxContact.isChecked());
-            db.collection("Users").document(user.getUid()).set(data).addOnCompleteListener(task -> {
+            db.collection("Users").document(uid).set(data).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     Log.d("ProfilePage", "saveToFirebase: Data saved successfully");
                     SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.prefName_login), MODE_PRIVATE);

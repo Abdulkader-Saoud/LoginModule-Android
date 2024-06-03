@@ -57,4 +57,5 @@ dependencies {
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("com.google.firebase:firebase-messaging:23.0.0")
     implementation("com.google.firebase:firebase-functions:20.1.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 }

@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -90,9 +93,18 @@
             android:exported="false"
             android:theme="@style/Theme.LoginModule" />
         <activity
+            android:name=".AttendanceModule.AttendancePage"
+            android:exported="false"
+            android:theme="@style/Theme.LoginModule"/>
+        <activity
+            android:name=".AttendanceModule.PastAttendance"
+            android:exported="false"
+            android:theme="@style/Theme.LoginModule"/>
+        <activity
             android:name=".HomePage"
             android:exported="false"
             android:theme="@style/Theme.LoginModule" />
+        <service android:name=".AttendanceModule.CountdownService" />
         <service
             android:name=".Post.MSGService"
             android:exported="false">

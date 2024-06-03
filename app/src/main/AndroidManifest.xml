@@ -21,8 +21,18 @@
         android:theme="@style/Theme.LoginModule"
         tools:targetApi="31">
         <activity
+            android:name=".PollQuesModule.PollActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PollQuesModule.PollsListActivity"
+            android:exported="false" />
+        <activity
             android:name=".Post.PostPage"
             android:exported="false" />
+        <activity
+            android:name=".PollQuesModule.CreatePollActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Report.ReportPage"
             android:exported="false" />
@@ -59,6 +69,7 @@
             android:theme="@style/Theme.LoginModule">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

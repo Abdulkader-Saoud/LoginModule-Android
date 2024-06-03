@@ -18,4 +18,5 @@
     <color name="attending">#E39F4B</color>
     <color name="complete">#4BE36C</color>
     <color name="not_started">#31363F</color>
+    <color name="red">#FF0000</color>
 </resources>

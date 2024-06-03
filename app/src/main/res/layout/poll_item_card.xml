@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="12dp"
+    android:backgroundTint="#FFEEEEEE"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:padding="5dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:gravity="center"
+            android:background="@drawable/roundbox">
+
+            <TextView
+                android:id="@+id/pollTitleTVId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Poll Title"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:fontFamily="@font/roboto_bold"
+                android:layout_marginBottom="2dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/startDateTVId">
+            </TextView>
+
+            <TextView
+                android:id="@+id/startDateTVId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="Start Date: 02/02/2024"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                app:layout_constraintTop_toBottomOf="@id/pollTitleTVId"
+                app:layout_constraintStart_toStartOf="parent">
+            </TextView>
+
+            <TextView
+                android:id="@+id/endDateTVId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="End Date: 02/02/2024"
+                android:layout_marginTop="2dp"
+                app:layout_constraintTop_toBottomOf="@id/pollTitleTVId"
+                app:layout_constraintStart_toStartOf="parent">
+            </TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/stateImgId"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/notify_icon">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/stateTxtId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not Voted Yet"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:fontFamily="@font/roboto_bold">
+            </TextView>
+
+        </LinearLayout>
+
+    </GridLayout>
+
+
+
+
+
+
+
+</androidx.cardview.widget.CardView>

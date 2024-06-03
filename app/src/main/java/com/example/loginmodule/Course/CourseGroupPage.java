@@ -19,6 +19,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.loginmodule.HomePage;
+import com.example.loginmodule.PollQuesModule.CreatePollActivity;
 import com.example.loginmodule.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -32,7 +33,7 @@ import java.util.Map;
 
 public class CourseGroupPage extends AppCompatActivity {
     private EditText studentIDET;
-    private Button addstudentBTN,laodCSVBTN,saveBTN,deleteBTN;
+    private Button addstudentBTN,laodCSVBTN,saveBTN,deleteBTN, createPollBtn;
     private ListView studentsLV;
     private ArrayList<String> studentsList = new ArrayList<>();
     private ArrayAdapter<String> studentAdapter;
@@ -63,7 +64,11 @@ public class CourseGroupPage extends AppCompatActivity {
         laodCSVBTN = findViewById(R.id.laodCSVBTN);
         stdCountTV = findViewById(R.id.studentsTV);
 
+        createPollBtn = findViewById(R.id.createPollBtnId);
+
         laodCSVBTN.setOnClickListener(view -> loadCSVHandler());
+
+        createPollBtn.setOnClickListener(view -> createPoll());
 
         saveBTN.setOnClickListener(view -> saveData());
         deleteBTN.setOnClickListener(view -> deleteGroup());
@@ -72,6 +77,13 @@ public class CourseGroupPage extends AppCompatActivity {
         docID = intent.getStringExtra("docID");
         fetchData();
     }
+
+    private void createPoll() {
+        Intent intent = new Intent(this, CreatePollActivity.class);
+        intent.putExtra("docId",docID);
+        startActivity(intent);
+    }
+
     private void fetchData() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("CourseGroups").document(docID).get().addOnSuccessListener(documentSnapshot -> {

@@ -146,6 +146,26 @@
             android:layout_marginTop="30sp"
             />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/createPollBtnId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/filledroundbox"
+            android:backgroundTint="#FF00"
+            android:text="Create Poll"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/saveBTN"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:paddingStart="22dp"
+            android:paddingEnd="22dp"
+            android:layout_marginTop="30dp"
+            />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
